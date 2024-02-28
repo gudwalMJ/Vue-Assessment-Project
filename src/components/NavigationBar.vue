@@ -7,7 +7,7 @@
           src="@/assets/img_logo_dtt@3x.png"
           alt="Logo"
           class="navbar-logo"
-        />House Listings</router-link
+        />Houses</router-link
       >
       <div class="navbar-menu">
         <router-link
@@ -36,13 +36,16 @@ export default {
 .navbar {
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   background-color: #ffffff;
+  padding: 30px;
 }
 .container {
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
+  padding: 0 200px;
 }
 .navbar-logo {
   height: 40px;
@@ -52,6 +55,7 @@ export default {
 .navbar-brand {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .is-active {
   font-weight: bold;
