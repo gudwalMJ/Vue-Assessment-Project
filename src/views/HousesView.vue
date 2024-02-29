@@ -1,9 +1,9 @@
-<!-- src/views/HousesView.vue -->
 <template>
   <div class="content-container">
-    <div class="search-container">
-      <h1 class="title">Houses</h1>
+    <h1 class="title">Houses</h1>
+    <div class="search-and-sort-container">
       <SearchBar :query="searchQuery" @update:query="searchQuery = $event" />
+      <SortOptions :activeSort="activeSort" @updateSort="updateSortMethod" />
     </div>
     <!-- Result indication -->
     <div v-if="searchQuery" class="results-indication">
@@ -13,7 +13,12 @@
     </div>
     <!-- Houses list -->
     <div class="houses" v-if="filteredHouses.length">
-      <div v-for="house in houses" :key="house.id" class="house">
+      <div
+        v-for="house in filteredHouses"
+        :key="house.id"
+        class="house"
+        @click="goToHouseDetails(house.id)"
+      >
         <img
           :src="house.image || placeholderImage"
           alt="House image"
@@ -55,6 +60,7 @@
 import apiService from "@/api/apiService";
 // Import Components
 import SearchBar from "@/components/SearchBar.vue";
+import SortOptions from "@/components/SortOptions.vue";
 // Import the placeholder image for houses
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
 // Import the images/icons
@@ -65,6 +71,7 @@ import bathIcon from "@/assets/ic_bath@3x.png";
 export default {
   components: {
     SearchBar,
+    SortOptions,
   },
   data() {
     return {
@@ -74,6 +81,7 @@ export default {
       placeholderImage,
       houses: [],
       searchQuery: "",
+      activeSort: null,
     };
   },
   computed: {
@@ -113,29 +121,47 @@ export default {
       // Example using 'de-DE' locale which typically uses dot as thousands separator
       return new Intl.NumberFormat("de-DE").format(price);
     },
+    updateSortMethod(sortOption) {
+      this.activeSort = sortOption;
+      const sortFunction = (a, b) => {
+        if (sortOption === "price") {
+          return a.price - b.price;
+        } else if (sortOption === "size") {
+          return a.size - b.size;
+        }
+      };
+      this.houses.sort(sortFunction);
+    },
+    goToHouseDetails(houseId) {
+      this.$router.push({ name: "HouseDetails", params: { id: houseId } });
+    },
   },
 };
 </script>
 
 <style scoped>
 .content-container {
-  margin-top: 100px; /* Adjust based on your navbar's height */
+  padding-top: 60px;
   background-color: #f6f6f6;
   min-height: 100vh;
-}
-.search-container {
-  margin-top: 100px; /* Space below the navbar */
+  font-family: "Montserrat", sans-serif;
 }
 .title {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 10px;
-  margin-bottom: 50px; /* Space between the title and the search bar */
+  margin-top: 50px;
+  margin-bottom: 30px; /* Space between the title and the search bar */
   margin-left: 270px;
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
+}
+.search-and-sort-container {
+  margin-top: 50px; /* Space below the navbar */
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .results-indication {

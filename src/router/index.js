@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Houses from "../views/HousesView.vue";
+import HouseDetails from "../views/HouseDetails.vue";
 
 const routes = [
   {
@@ -7,7 +8,11 @@ const routes = [
     name: "Houses",
     component: Houses,
   },
-  // other routes
+  {
+    path: "/house/:id", // :id is a dynamic segment
+    name: "HouseDetails",
+    component: HouseDetails,
+  },
 ];
 
 const router = createRouter({

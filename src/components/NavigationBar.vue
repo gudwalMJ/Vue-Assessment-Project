@@ -39,17 +39,17 @@ export default {
   left: 0;
   width: 100%;
   background-color: #ffffff;
-  padding: 30px;
+  padding: 10px;
 }
 .container {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  padding: 0 200px;
+  padding: 0 220px;
 }
 .navbar-logo {
   height: 40px;
-  margin-right: 50px;
+  margin-right: 60px;
   margin-left: 35%;
 }
 .navbar-brand {
