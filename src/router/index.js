@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Houses from "../views/HousesView.vue";
 import HouseDetails from "../views/HouseDetails.vue";
+import NewListingForm from "../components/NewListingForm.vue";
 
 const routes = [
   {
@@ -12,6 +13,18 @@ const routes = [
     path: "/house/:id", // :id is a dynamic segment
     name: "HouseDetails",
     component: HouseDetails,
+    props: true,
+  },
+  {
+    path: "/new-listing",
+    name: "NewListingForm",
+    component: NewListingForm,
+  },
+  {
+    path: "/edit-listing/:id",
+    name: "EditListingForm",
+    component: () => import("../components/EditListingForm.vue"),
+    props: true,
   },
 ];
 

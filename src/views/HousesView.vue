@@ -1,9 +1,23 @@
 <template>
   <div class="content-container">
-    <h1 class="title">Houses</h1>
+    <!-- Title -->
+    <div class="title-container">
+      <h1 class="title">Houses</h1>
+      <!-- Toggle button for showing the create listing form -->
+      <router-link to="/new-listing" class="create-listing-button"
+        >+ Create New</router-link
+      >
+      <!-- Create listing form -->
+      <div v-if="showCreateForm">
+        <NewListingForm @listing-created="handleListingCreated" />
+      </div>
+    </div>
+    <!-- Search and sort -->
     <div class="search-and-sort-container">
       <SearchBar :query="searchQuery" @update:query="searchQuery = $event" />
-      <SortOptions :activeSort="activeSort" @updateSort="updateSortMethod" />
+      <div class="sort-options-container">
+        <SortOptions :activeSort="activeSort" @updateSort="updateSortMethod" />
+      </div>
     </div>
     <!-- Result indication -->
     <div v-if="searchQuery" class="results-indication">
@@ -61,6 +75,7 @@ import apiService from "@/api/apiService";
 // Import Components
 import SearchBar from "@/components/SearchBar.vue";
 import SortOptions from "@/components/SortOptions.vue";
+import NewListingForm from "@/components/NewListingForm.vue";
 // Import the placeholder image for houses
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
 // Import the images/icons
@@ -72,6 +87,7 @@ export default {
   components: {
     SearchBar,
     SortOptions,
+    NewListingForm,
   },
   data() {
     return {
@@ -82,6 +98,7 @@ export default {
       houses: [],
       searchQuery: "",
       activeSort: null,
+      showCreateForm: false,
     };
   },
   computed: {
@@ -135,6 +152,11 @@ export default {
     goToHouseDetails(houseId) {
       this.$router.push({ name: "HouseDetails", params: { id: houseId } });
     },
+    handleListingCreated(newListingId) {
+      this.showCreateForm = false; // Hide the form
+      this.fetchHouses(); // Refresh the list, or add the new listing to it
+      this.$router.push({ name: "HouseDetails", params: { id: newListingId } });
+    },
   },
 };
 </script>
@@ -145,6 +167,13 @@ export default {
   background-color: #f6f6f6;
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
+}
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px; /* Adjust as needed for spacing */
+  padding: 0 15px; /* Add padding to match the design spacing */
 }
 .title {
   position: relative;
@@ -158,10 +187,19 @@ export default {
   font-weight: bold;
 }
 .search-and-sort-container {
-  margin-top: 50px; /* Space below the navbar */
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 10px; /* Adjust gap as needed */
+  margin-top: 20px; /* Adjust as needed for spacing */
+  padding: 0 15px; /* Add padding to match the design spacing */
+  margin-right: 90px;
+  margin-left: -15px;
+}
+.sort-options-container {
+  display: flex;
+  gap: 0px; /* Reduce the gap to bring elements closer */
+  align-items: center; /* Center-align the items vertically */
+  justify-content: start; /* Align items to the start of the container */
 }
 
 .results-indication {
@@ -180,7 +218,17 @@ export default {
 }
 
 .house {
-  /* Add styles for the house cards */
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Adjust minmax for your card width */
+  gap: 20px; /* Adjust gap as needed */
+  padding: 0 15px; /* Add padding to match the design spacing */
+  margin-left: 270px;
+  margin-right: 200px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
 }
 .house-image {
   max-width: 2000px;

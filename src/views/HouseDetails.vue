@@ -1,7 +1,9 @@
 <template>
   <div class="house-details-page">
     <div class="house-details">
-      <a href="/" class="back-to-overview">Back to overview</a>
+      <a href="/" class="back-to-overview"
+        ><img :src="backIcon" alt="back" />Back to overview</a
+      >
 
       <div class="house-image-container">
         <img :src="house?.image || placeholderImage" alt="House image" />
@@ -11,13 +13,34 @@
         <h2>
           {{ house?.location?.street }} {{ house?.location?.houseNumber }}
         </h2>
+        <p class="postal-city">
+          <img :src="locationIcon" alt="Location" /> {{ house?.location?.zip }}
+          {{ house?.location?.city }}
+        </p>
         <div class="house-meta">
-          <span class="price">€ {{ house?.price }}</span>
-          <span class="size">{{ house?.size }} m²</span>
-          <span class="year">Built in {{ house?.constructionYear }}</span>
+          <span class="price"
+            ><img :src="euroIcon" alt="Euros" /> {{ house?.price }}</span
+          >
+          <span class="size"
+            ><img :src="sizeIcon" alt="Size" />{{ house?.size }} m²</span
+          >
+          <span class="year"
+            ><img :src="constructionIcon" alt="Location" />Built in
+            {{ house?.constructionYear }}</span
+          >
         </div>
+        <p class="house-icons">
+          <img :src="bedIcon" alt="Bedrooms" /> {{ house?.rooms?.bedrooms }}
+          <img :src="bathIcon" alt="Bathrooms" /> {{ house?.rooms?.bathrooms }}
+          <img :src="garageIcon" alt="Garage" />
+          {{ house?.hasGarage ? "Yes" : "No" }}
+        </p>
         <div class="house-description">
           {{ house?.description }}
+        </div>
+        <div class="house-actions">
+          <button @click="navigateToEditPage">Edit</button>
+          <button @click="deleteListing">Delete</button>
         </div>
       </div>
     </div>
@@ -28,10 +51,27 @@
 // Imports
 import apiService from "@/api/apiService";
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
+// Import the images/icons
+import backIcon from "@/assets/ic_back_grey@3x.png";
+import garageIcon from "@/assets/ic_garage@3x.png";
+import bedIcon from "@/assets/ic_bed@3x.png";
+import bathIcon from "@/assets/ic_bath@3x.png";
+import locationIcon from "@/assets/ic_location@3x.png";
+import euroIcon from "@/assets/ic_price@3x.png";
+import sizeIcon from "@/assets/ic_size@3x.png";
+import constructionIcon from "@/assets/ic_construction_date@3x.png";
 
 export default {
   data() {
     return {
+      backIcon,
+      garageIcon,
+      bedIcon,
+      bathIcon,
+      locationIcon,
+      sizeIcon,
+      euroIcon,
+      constructionIcon,
       house: {
         image: "", // Assuming a string path or URL
         location: {
@@ -73,6 +113,26 @@ export default {
           console.error("Error fetching house details:", error);
         });
     },
+    navigateToEditPage() {
+      this.$router.push({
+        name: "EditListingForm",
+        params: { id: this.house.id },
+      });
+    },
+    deleteListing() {
+      if (confirm("Are you sure you want to delete this listing?")) {
+        apiService
+          .deleteHouse(this.house.id)
+          .then(() => {
+            alert("Listing deleted successfully.");
+            this.$router.push({ name: "Houses" });
+          })
+          .catch((error) => {
+            console.error("Error deleting listing:", error);
+            alert("Failed to delete listing.");
+          });
+      }
+    },
   },
 };
 </script>
@@ -96,6 +156,11 @@ export default {
   color: #333;
   text-decoration: none;
   font-size: 0.9rem;
+}
+.back-to-overview img {
+  width: 24px; /* or the size of your icons */
+  height: auto;
+  margin-right: 0.5rem;
 }
 
 .house-image-container {
@@ -121,25 +186,39 @@ export default {
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
 }
+.postal-city {
+  color: #4a4b4c;
+  margin-top: 0.5rem;
+}
 
 .house-meta {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin: 1rem 0;
   font-size: 0.9rem;
 }
 
 .house-meta span {
-  margin-right: 2rem;
+  margin-right: 1rem;
   display: inline-block;
-  background: #f3f3f3;
-  padding: 0.5rem 1rem;
-  border-radius: 15px;
+  color: #4a4b4c;
+  padding: 0.5rem 0.5rem;
+}
+.house-icons {
+  color: #4a4b4c;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+.house-icons img {
+  width: 24px; /* or the size of your icons */
+  height: auto;
+  margin-right: 0.5rem;
 }
 
 .price {
   font-weight: bold;
-  color: #e63946;
+  color: #4a4b4c;
 }
 
 .year {
