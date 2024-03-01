@@ -42,3 +42,6 @@ Day2
 @1600 Story 6 was finished (Caused issues)
 Day3
 @0915 Started with User Story7
+@1015 Story9 finished - Story 7/8 Edit doesnt work
+@1030 Break till @1100
+@1100 Started CSS
