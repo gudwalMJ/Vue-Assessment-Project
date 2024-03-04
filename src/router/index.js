@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Houses from "../views/HousesView.vue";
 import HouseDetails from "../views/HouseDetails.vue";
 import NewListingForm from "../components/NewListingForm.vue";
+import AboutPage from "../pages/AboutPage.vue";
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     name: "EditListingForm",
     component: () => import("../components/EditListingForm.vue"),
     props: true,
+  },
+  {
+    path: "/about",
+    name: "About",
+    component: AboutPage,
   },
 ];
 

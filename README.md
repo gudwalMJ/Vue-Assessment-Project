@@ -45,3 +45,6 @@ Day3
 @1015 Story9 finished - Story 7/8 Edit doesnt work
 @1030 Break till @1100
 @1100 Started CSS
+Day4
+@1030 Started Story 7/8
+@1200 Finished Story 7/8/9

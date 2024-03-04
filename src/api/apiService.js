@@ -30,7 +30,19 @@ export default {
 
   // Edit an existing house listing
   editHouse(houseId, houseData) {
-    return apiClient.post(`/${houseId}`, houseData);
+    // Check if houseData is an instance of FormData
+    if (houseData instanceof FormData) {
+      // If so, let the browser set the Content-Type header automatically to handle boundary generation
+      return apiClient.post(`/${houseId}`, houseData, {
+        headers: {
+          "X-Api-Key": API_KEY, // Ensure API key is included
+          "Content-Type": "multipart/form-data", // This line is actually optional; axios/browser will set it correctly
+        },
+      });
+    } else {
+      // If not FormData, assume JSON
+      return apiClient.post(`/${houseId}`, houseData);
+    }
   },
 
   // Delete a house listing

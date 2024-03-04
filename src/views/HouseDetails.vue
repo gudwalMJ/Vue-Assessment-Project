@@ -12,6 +12,9 @@
       <div class="house-content">
         <h2>
           {{ house?.location?.street }} {{ house?.location?.houseNumber }}
+          <span v-if="house?.location?.houseNumberAddition">
+            {{ house?.location?.houseNumberAddition }}</span
+          >
         </h2>
         <p class="postal-city">
           <img :src="locationIcon" alt="Location" /> {{ house?.location?.zip }}
@@ -39,8 +42,12 @@
           {{ house?.description }}
         </div>
         <div class="house-actions">
-          <button @click="navigateToEditPage">Edit</button>
-          <button @click="deleteListing">Delete</button>
+          <button @click="navigateToEditPage(house.id)" class="edit-button">
+            Edit
+          </button>
+          <button @click="deleteListing(house.id)" class="delete-button">
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -113,16 +120,13 @@ export default {
           console.error("Error fetching house details:", error);
         });
     },
-    navigateToEditPage() {
-      this.$router.push({
-        name: "EditListingForm",
-        params: { id: this.house.id },
-      });
+    navigateToEditPage(houseId) {
+      this.$router.push({ name: "EditListingForm", params: { id: houseId } });
     },
-    deleteListing() {
+    deleteListing(houseId) {
       if (confirm("Are you sure you want to delete this listing?")) {
         apiService
-          .deleteHouse(this.house.id)
+          .deleteHouse(houseId)
           .then(() => {
             alert("Listing deleted successfully.");
             this.$router.push({ name: "Houses" });
@@ -228,5 +232,22 @@ export default {
 .house-description {
   color: #333;
   line-height: 1.6;
+}
+
+.edit-button,
+.delete-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+.edit-button {
+  background-color: #4caf50; /* Green */
+  color: white;
+}
+.delete-button {
+  background-color: #f44336; /* Red */
+  color: white;
+  margin-left: 10px;
 }
 </style>

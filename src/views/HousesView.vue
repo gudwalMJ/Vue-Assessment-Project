@@ -5,7 +5,8 @@
       <h1 class="title">Houses</h1>
       <!-- Toggle button for showing the create listing form -->
       <router-link to="/new-listing" class="create-listing-button"
-        >+ Create New</router-link
+        ><img :src="plusIcon" alt="Create New" class="plus-icon" /> Create
+        New</router-link
       >
       <!-- Create listing form -->
       <div v-if="showCreateForm">
@@ -15,9 +16,8 @@
     <!-- Search and sort -->
     <div class="search-and-sort-container">
       <SearchBar :query="searchQuery" @update:query="searchQuery = $event" />
-      <div class="sort-options-container">
-        <SortOptions :activeSort="activeSort" @updateSort="updateSortMethod" />
-      </div>
+
+      <SortOptions :activeSort="activeSort" @updateSort="updateSortMethod" />
     </div>
     <!-- Result indication -->
     <div v-if="searchQuery" class="results-indication">
@@ -40,16 +40,18 @@
         />
 
         <div class="details">
-          <p>
+          <p class="street">
             {{
               `${house.location.street} ${house.location.houseNumber}${
                 house.location.houseNumberAddition || ""
-              }, € ${formatPrice(house.price)} ${house.location.zip} ${
-                house.location.city
               }`
             }}
           </p>
-          <p>
+          <p class="price">€ {{ formatPrice(house.price) }}</p>
+          <p class="zip-city">
+            {{ `${house.location.zip} ${house.location.city}` }}
+          </p>
+          <p class="info">
             <img :src="bedIcon" alt="Bedrooms" /> {{ house.rooms.bedrooms }}
             <img :src="bathIcon" alt="Bathrooms" /> {{ house.rooms.bathrooms }}
             <img :src="sizeIcon" alt="Size" /> {{ house.size }} m2
@@ -79,6 +81,7 @@ import NewListingForm from "@/components/NewListingForm.vue";
 // Import the placeholder image for houses
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
 // Import the images/icons
+import plusIcon from "@/assets/ic_plus_white@3x.png";
 import sizeIcon from "@/assets/ic_size@3x.png";
 import bedIcon from "@/assets/ic_bed@3x.png";
 import bathIcon from "@/assets/ic_bath@3x.png";
@@ -91,6 +94,7 @@ export default {
   },
   data() {
     return {
+      plusIcon,
       sizeIcon,
       bedIcon,
       bathIcon,
@@ -172,38 +176,51 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px; /* Adjust as needed for spacing */
-  padding: 0 15px; /* Add padding to match the design spacing */
+  margin-top: 20px;
+  padding: 0 15px;
+  margin-right: 185px;
+  margin-bottom: 10px;
 }
 .title {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-top: 50px;
-  margin-bottom: 30px; /* Space between the title and the search bar */
-  margin-left: 270px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-left: 255px;
   font-size: 32px;
   font-weight: bold;
+}
+.create-listing-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #eb5440;
+  padding: 10px;
+  width: 150px;
+  justify-content: center;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.plus-icon {
+  width: 15px;
+  height: 15px;
 }
 .search-and-sort-container {
   display: flex;
   justify-content: space-between;
-  gap: 10px; /* Adjust gap as needed */
-  margin-top: 20px; /* Adjust as needed for spacing */
-  padding: 0 15px; /* Add padding to match the design spacing */
-  margin-right: 90px;
-  margin-left: -15px;
-}
-.sort-options-container {
-  display: flex;
-  gap: 0px; /* Reduce the gap to bring elements closer */
-  align-items: center; /* Center-align the items vertically */
-  justify-content: start; /* Align items to the start of the container */
+  gap: 10px;
+  margin-right: 200px;
 }
 
 .results-indication {
-  margin-top: 50px; /* Space directly below the search bar */
+  margin-top: 50px;
   margin-left: 270px;
   font-size: 20px;
   font-weight: bold;
@@ -213,46 +230,80 @@ export default {
   justify-content: flex-start;
 }
 .houses {
-  margin-top: 50px; /* Adjust based on the height of your fixed header */
+  margin-top: 50px;
   background-color: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* This adds space between the cards */
 }
 
 .house {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(250px, 1fr)
-  ); /* Adjust minmax for your card width */
-  gap: 20px; /* Adjust gap as needed */
-  padding: 0 15px; /* Add padding to match the design spacing */
+  display: flex;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #ffffff;
   margin-left: 270px;
   margin-right: 200px;
-  margin-bottom: 20px;
-  background-color: #ffffff;
+  padding: 15px;
+  align-items: center;
 }
 .house-image {
-  max-width: 2000px;
+  max-width: 200px;
   max-height: 200px;
   object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
 }
-.details img {
+.details {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  gap: 5px;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.details p {
+  margin: 0;
+  color: #4a4b4c;
+  font-size: 18px;
+}
+.details p.street {
+  font-weight: bold;
+  font-size: 22px;
+  color: #000000;
+}
+.details p.price {
+  color: #000000;
+  font-size: 18px;
+  font-weight: 500;
+}
+.details p.zip-city {
+  color: #c3c3c3;
+}
+.details p.info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.details p.info img {
   width: 24px;
   height: 24px;
-  vertical-align: middle;
 }
 .empty-state-image {
   display: block;
   width: 250px;
   height: 250px;
-  margin: 0 auto 20px;
   object-fit: contain;
 }
 .empty-state-container {
   text-align: center;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .empty-state-container p {
-  margin: 0;
   color: #4a4b4c;
   font-size: 1em;
 }

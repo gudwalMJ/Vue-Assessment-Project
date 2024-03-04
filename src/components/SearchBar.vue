@@ -47,7 +47,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-color: #c3c3c3;
+  background-color: #e8e8e8;
   border-radius: 5px;
   width: 400px;
   height: 30px;
@@ -60,7 +60,7 @@ export default {
   font-size: 1em;
   background-image: url("@/assets/ic_search@3x.png");
   background-size: 20px 20px;
-  background-color: #c3c3c3;
+  background-color: #e8e8e8;
   background-position: 10px center;
   background-repeat: no-repeat;
   border: none;
