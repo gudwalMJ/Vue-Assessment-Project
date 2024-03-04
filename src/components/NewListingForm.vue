@@ -261,3 +261,51 @@ export default {
   },
 };
 </script>
+<style scoped>
+.new-listing-page {
+  margin-top: 50px; /* Adjust as needed */
+  background-image: url("@/assets/img_background@3x.png");
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+}
+.new-listing-page h1 {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  font-size: 32px;
+  color: #000000; /* Adjust text color as needed */
+  font-weight: bold;
+}
+
+/* Input field styles */
+.new-listing-page .input-container {
+  margin-bottom: 20px;
+}
+
+.new-listing-page label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.new-listing-page input[type="text"],
+.new-listing-page input[type="number"] {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc; /* Adjust border color as needed */
+  border-radius: 5px;
+}
+
+.new-listing-page button {
+  background-color: #007bff; /* Adjust button color as needed */
+  color: #fff; /* Adjust button text color as needed */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.new-listing-page button:hover {
+  background-color: #0056b3; /* Adjust hover color as needed */
+}
+</style>

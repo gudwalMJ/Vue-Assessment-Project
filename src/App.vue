@@ -16,6 +16,13 @@ export default {
 </script>
 
 <style>
+/* Import Montserrat font from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+/* Apply Montserrat font to all elements */
+body {
+  font-family: "Montserrat", sans-serif;
+}
 html,
 body,
 div,

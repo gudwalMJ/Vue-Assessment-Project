@@ -57,6 +57,20 @@
             <img :src="sizeIcon" alt="Size" /> {{ house.size }} m2
           </p>
         </div>
+        <div class="house-footer" v-if="house.madeByMe">
+          <router-link
+            :to="{ name: 'EditListingForm', params: { id: house.id } }"
+            class="action-button edit"
+          >
+            <img src="@/assets/ic_edit@3x.png" alt="Edit" />
+          </router-link>
+          <button
+            @click.stop="deleteListing(house.id)"
+            class="action-button delete"
+          >
+            <img src="@/assets/ic_delete@3x.png" alt="Delete" />
+          </button>
+        </div>
       </div>
     </div>
     <!-- Empty state -->
@@ -127,21 +141,23 @@ export default {
     this.fetchHouses();
   },
   methods: {
+    // FETCH Houses
     fetchHouses() {
       apiService
         .getHouses()
         .then((response) => {
-          console.log(response.data); // Log the API response data
+          console.log(response.data);
           this.houses = response.data;
         })
         .catch((error) => {
           console.error("Error fetching houses:", error);
         });
     },
+    // FORMAT price
     formatPrice(price) {
-      // Example using 'de-DE' locale which typically uses dot as thousands separator
       return new Intl.NumberFormat("de-DE").format(price);
     },
+    // SORT method
     updateSortMethod(sortOption) {
       this.activeSort = sortOption;
       const sortFunction = (a, b) => {
@@ -153,13 +169,35 @@ export default {
       };
       this.houses.sort(sortFunction);
     },
+    // Route to HoseDetails
     goToHouseDetails(houseId) {
       this.$router.push({ name: "HouseDetails", params: { id: houseId } });
     },
+    // Creation of new Listing
     handleListingCreated(newListingId) {
       this.showCreateForm = false; // Hide the form
       this.fetchHouses(); // Refresh the list, or add the new listing to it
       this.$router.push({ name: "HouseDetails", params: { id: newListingId } });
+    },
+    // Route to EditPage
+    navigateToEditPage(houseId) {
+      this.$router.push({ name: "EditListingForm", params: { id: houseId } });
+    },
+    // Delete listing
+    deleteListing(houseId) {
+      // This method will handle the deletion of a house listing
+      if (confirm("Are you sure you want to delete this listing?")) {
+        apiService
+          .deleteHouse(houseId)
+          .then(() => {
+            alert("Listing deleted successfully.");
+            this.fetchHouses(); // Refresh the list after deletion
+          })
+          .catch((error) => {
+            console.error("Error deleting listing:", error);
+            alert("Failed to delete listing.");
+          });
+      }
     },
   },
 };
@@ -168,6 +206,7 @@ export default {
 <style scoped>
 .content-container {
   padding-top: 60px;
+  padding-bottom: 60px;
   background-color: #f6f6f6;
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
@@ -235,6 +274,7 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 20px; /* This adds space between the cards */
+  margin-bottom: 50px;
 }
 
 .house {
@@ -249,8 +289,8 @@ export default {
   align-items: center;
 }
 .house-image {
-  max-width: 200px;
-  max-height: 200px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 5px;
   margin-right: 10px;
@@ -258,7 +298,7 @@ export default {
 .details {
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 10px 15px 15px;
   gap: 5px;
   align-items: flex-start;
   flex-grow: 1;
@@ -291,6 +331,25 @@ export default {
   width: 24px;
   height: 24px;
 }
+.house-footer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 5px;
+  margin-top: -120px;
+}
+.action-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
+}
+.action-button img {
+  width: 15px;
+  height: 15px;
+  display: block; /* Ensure it’s visible */
+}
 .empty-state-image {
   display: block;
   width: 250px;
@@ -305,6 +364,6 @@ export default {
 }
 .empty-state-container p {
   color: #4a4b4c;
-  font-size: 1em;
+  font-size: 18px;
 }
 </style>

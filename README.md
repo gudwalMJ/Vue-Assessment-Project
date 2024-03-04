@@ -48,3 +48,7 @@ Day3
 Day4
 @1030 Started Story 7/8
 @1200 Finished Story 7/8/9
+@1200 Started with CSS
+@1400 Lunch Break
+@1500 Continue with CSS
+@1630 Stop

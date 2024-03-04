@@ -10,44 +10,62 @@
       </div>
 
       <div class="house-content">
-        <h2>
-          {{ house?.location?.street }} {{ house?.location?.houseNumber }}
-          <span v-if="house?.location?.houseNumberAddition">
-            {{ house?.location?.houseNumberAddition }}</span
-          >
-        </h2>
+        <div class="title-and-actions">
+          <h2 class="house-title">
+            {{ house?.location?.street }} {{ house?.location?.houseNumber }}
+            <span v-if="house?.location?.houseNumberAddition">
+              {{ house?.location?.houseNumberAddition }}
+            </span>
+          </h2>
+          <div class="house-actions" v-if="house.madeByMe">
+            <router-link
+              :to="{ name: 'EditListingForm', params: { id: house.id } }"
+              class="action-button"
+            >
+              <img src="@/assets/ic_edit@3x.png" alt="Edit" />
+            </router-link>
+            <button @click="deleteListing(house.id)" class="action-button">
+              <img src="@/assets/ic_delete@3x.png" alt="Delete" />
+            </button>
+          </div>
+        </div>
         <p class="postal-city">
           <img :src="locationIcon" alt="Location" /> {{ house?.location?.zip }}
           {{ house?.location?.city }}
         </p>
         <div class="house-meta">
           <span class="price"
-            ><img :src="euroIcon" alt="Euros" /> {{ house?.price }}</span
+            ><img :src="euroIcon" alt="Euros" class="icon" />
+            {{ house?.price }}</span
           >
           <span class="size"
-            ><img :src="sizeIcon" alt="Size" />{{ house?.size }} m²</span
+            ><img :src="sizeIcon" alt="Size" class="icon" />{{
+              house?.size
+            }}
+            m²</span
           >
           <span class="year"
-            ><img :src="constructionIcon" alt="Location" />Built in
+            ><img :src="constructionIcon" alt="Location" class="icon" />Built in
             {{ house?.constructionYear }}</span
           >
         </div>
-        <p class="house-icons">
-          <img :src="bedIcon" alt="Bedrooms" /> {{ house?.rooms?.bedrooms }}
-          <img :src="bathIcon" alt="Bathrooms" /> {{ house?.rooms?.bathrooms }}
-          <img :src="garageIcon" alt="Garage" />
-          {{ house?.hasGarage ? "Yes" : "No" }}
-        </p>
+        <div class="house-icons">
+          <p>
+            <span class="icon-text">
+              <img :src="bedIcon" alt="Bedrooms" /> {{ house?.rooms?.bedrooms }}
+            </span>
+            <span class="icon-text">
+              <img :src="bathIcon" alt="Bathrooms" />
+              {{ house?.rooms?.bathrooms }}
+            </span>
+            <span class="icon-text">
+              <img :src="garageIcon" alt="Garage" />
+              {{ house?.hasGarage ? "Yes" : "No" }}
+            </span>
+          </p>
+        </div>
         <div class="house-description">
           {{ house?.description }}
-        </div>
-        <div class="house-actions">
-          <button @click="navigateToEditPage(house.id)" class="edit-button">
-            Edit
-          </button>
-          <button @click="deleteListing(house.id)" class="delete-button">
-            Delete
-          </button>
         </div>
       </div>
     </div>
@@ -144,6 +162,7 @@ export default {
 <style scoped>
 .house-details-page {
   padding-top: 100px;
+  padding-bottom: 100px;
   background-color: #f6f6f6;
   min-height: 100vh;
   font-family: "Montserrat", sans-serif;
@@ -155,16 +174,20 @@ export default {
 }
 
 .back-to-overview {
-  display: inline-block;
+  display: flex;
+  align-items: flex-start;
   margin-bottom: 1rem;
-  color: #333;
+  color: #4a4b4c;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 16px;
 }
 .back-to-overview img {
-  width: 24px; /* or the size of your icons */
+  width: 18px;
   height: auto;
   margin-right: 0.5rem;
+}
+.back-to-overview {
+  font-weight: bold;
 }
 
 .house-image-container {
@@ -178,6 +201,8 @@ export default {
 }
 
 .house-content {
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
   background: white;
   border: 1px solid #ddd;
@@ -185,8 +210,8 @@ export default {
 }
 
 .house-content h2 {
-  margin-top: 0;
-  font-size: 22px;
+  margin-top: 20px;
+  font-size: 32px;
   font-weight: bold;
   font-family: "Montserrat", sans-serif;
 }
@@ -194,14 +219,28 @@ export default {
   color: #4a4b4c;
   margin-top: 0.5rem;
 }
+.house-title,
+.postal-city {
+  text-align: left; /* Align text to the left */
+}
+.postal-city img {
+  height: 20px;
+}
 
 .house-meta {
   display: flex;
   align-items: flex-start;
+  align-items: center;
   margin: 1rem 0;
-  font-size: 0.9rem;
+  font-size: 16px;
 }
-
+.icon {
+  width: 20px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 5px; /* Adjust the spacing between icon and text */
+  margin-left: -10px;
+  vertical-align: middle;
+}
 .house-meta span {
   margin-right: 1rem;
   display: inline-block;
@@ -212,42 +251,49 @@ export default {
   color: #4a4b4c;
   display: flex;
   align-items: center;
-  margin: 1rem 0;
+  margin: 0;
 }
 .house-icons img {
-  width: 24px; /* or the size of your icons */
+  width: 24px;
   height: auto;
-  margin-right: 0.5rem;
+}
+.icon-text {
+  margin-right: 2rem;
 }
 
+.year,
 .price {
-  font-weight: bold;
   color: #4a4b4c;
 }
 
-.year {
-  color: #333;
-}
-
 .house-description {
-  color: #333;
-  line-height: 1.6;
+  color: #4a4b4c;
+  line-height: 1.5;
+  font-size: 18px;
+  margin-top: 25px;
+  text-align: left;
 }
-
-.edit-button,
-.delete-button {
-  margin-top: 20px;
-  padding: 10px 20px;
+.house-actions {
+  align-self: flex-end;
+  padding-right: 1rem;
+}
+.action-button {
+  background: none;
   border: none;
   cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
 }
-.edit-button {
-  background-color: #4caf50; /* Green */
-  color: white;
+
+.action-button img {
+  width: 18px;
+  height: auto;
 }
-.delete-button {
-  background-color: #f44336; /* Red */
-  color: white;
-  margin-left: 10px;
+
+.title-and-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22px;
 }
 </style>
