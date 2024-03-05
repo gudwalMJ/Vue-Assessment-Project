@@ -1,13 +1,17 @@
 <template>
   <div class="edit-listing-page">
-    <a href="/" class="back-to-overview">
-      <img :src="backIcon" alt="Back" /> Back to overview
-    </a>
-    <h1>Edit Listing</h1>
-    <form @submit.prevent="submitForm">
+    <!-- Header section with back navigation and page title -->
+    <div class="header-container">
+      <a href="/" class="back-to-overview">
+        <img :src="backIcon" alt="Back" /> Back to detail page
+      </a>
+      <h1>Edit Listing</h1>
+    </div>
+    <!-- Form layout for editing listing -->
+    <form @submit.prevent="submitForm" class="form-layout">
       <!-- Input for StreetName -->
       <div class="input-container">
-        <label for="street-name">Street Name*</label>
+        <label for="street-name">Street name*</label>
         <input
           id="street-name"
           v-model="listing.location.street"
@@ -18,31 +22,35 @@
         />
       </div>
       <!-- Input for HouseNumber -->
-      <div class="input-container">
-        <label for="house-number">House Number*</label>
-        <input
-          id="house-number"
-          v-model="listing.location.houseNumber"
-          type="text"
-          placeholder="Enter house number"
-          required
-          v-if="listing && listing.location"
-        />
-      </div>
-      <!-- Input for HouseAddition -->
-      <div class="input-container">
-        <label for="addition">Addition (optional)</label>
-        <input
-          id="addition"
-          v-model="listing.location.numberAddition"
-          type="text"
-          placeholder="e.g. A"
-          v-if="listing && listing.location"
-        />
+      <div class="row">
+        <div class="input-container half">
+          <label for="house-number">House number*</label>
+          <input
+            id="house-number"
+            v-model="listing.location.houseNumber"
+            type="text"
+            placeholder="Enter house number"
+            required
+            v-if="listing && listing.location"
+          />
+        </div>
+
+        <!-- Input for HouseAddition -->
+
+        <div class="input-container half">
+          <label for="addition">Addition (optional)</label>
+          <input
+            id="addition"
+            v-model="listing.location.numberAddition"
+            type="text"
+            placeholder="e.g. A"
+            v-if="listing && listing.location"
+          />
+        </div>
       </div>
       <!-- Input for ZIP -->
       <div class="input-container">
-        <label for="zip-code">ZIP Code*</label>
+        <label for="zip-code">Postal code*</label>
         <input
           id="zip-code"
           v-model="listing.location.zip"
@@ -67,15 +75,50 @@
         />
       </div>
       <!-- Input for Image Upload -->
+      <!-- Input field for Image Upload -->
       <div class="input-container">
-        <label for="image">Upload picture (PNG or JPG)*</label>
-        <input
-          type="file"
-          id="image"
-          @change="handleImageUpload"
-          v-if="listing && listing.location"
-        />
+        <label for="image-upload" class="upload-label"
+          >Upload picture (PNG or JPG)*</label
+        >
+        <div class="upload-btn-wrapper">
+          <!-- Show image preview if an image has been uploaded or if there is an existing image -->
+          <img
+            v-if="imagePreviewUrl || (listing && listing.image)"
+            :src="imagePreviewUrl || listing.image"
+            alt="Image preview"
+            class="image-preview"
+          />
+
+          <!-- Show the upload icon if there is no image preview URL and no existing image -->
+          <img
+            v-else
+            src="@/assets/ic_upload@3x.png"
+            alt="Upload"
+            class="btn-upload"
+            @click="triggerFileInput"
+          />
+
+          <!-- Clear image button (displayed only when there is an image preview or an existing image) -->
+          <button
+            v-if="imagePreviewUrl || (listing && listing.image)"
+            @click="clearImage"
+            type="button"
+            class="clear-image-btn"
+          >
+            <img src="@/assets/ic_clear_white@3x.png" alt="Clear" />
+          </button>
+
+          <!-- Hidden file input field -->
+          <input
+            type="file"
+            id="image-upload"
+            @change="handleImageUpload"
+            ref="fileInput"
+            hidden
+          />
+        </div>
       </div>
+
       <!-- Input for Price -->
       <div class="input-container">
         <label for="price">Price*</label>
@@ -89,48 +132,54 @@
         />
       </div>
       <!-- Input for Size -->
-      <div class="input-container">
-        <label for="size">Size*</label>
-        <input
-          id="size"
-          v-model.number="listing.size"
-          type="number"
-          placeholder="Enter size"
-          required
-          v-if="listing && listing.location"
-        />
-      </div>
-      <!-- Input for Garage -->
-      <div class="input-container">
-        <label for="hasGarage">Garage*</label>
-        <select id="hasGarage" v-model="listing.hasGarage">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
+      <div class="row">
+        <div class="input-container half">
+          <label for="size">Size*</label>
+          <input
+            id="size"
+            v-model.number="listing.size"
+            type="number"
+            placeholder="Enter size"
+            required
+            v-if="listing && listing.location"
+          />
+        </div>
+
+        <!-- Input for Garage -->
+        <div class="input-container half">
+          <label for="garage-select">Garage*</label>
+          <select id="garage-select" v-model="listing.hasGarage" required>
+            <option value="" disabled selected>Select</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
+          </select>
+        </div>
       </div>
       <!-- Input for Bedrooms -->
-      <div class="input-container">
-        <label for="bedrooms">Bedrooms*</label>
-        <input
-          id="bedrooms"
-          v-model.number="listing.bedrooms"
-          type="number"
-          placeholder="Enter amount"
-          required
-          v-if="listing && listing.location"
-        />
-      </div>
-      <!-- Input for Bathrooms -->
-      <div class="input-container">
-        <label for="bathrooms">Bathrooms*</label>
-        <input
-          id="bathrooms"
-          v-model.number="listing.bathrooms"
-          type="number"
-          placeholder="Enter amount"
-          required
-          v-if="listing && listing.location"
-        />
+      <div class="row">
+        <div class="input-container half">
+          <label for="bedrooms">Bedrooms*</label>
+          <input
+            id="bedrooms"
+            v-model.number="listing.bedrooms"
+            type="number"
+            placeholder="Enter amount"
+            required
+            v-if="listing && listing.location"
+          />
+        </div>
+        <!-- Input for Bathrooms -->
+        <div class="input-container half">
+          <label for="bathrooms">Bathrooms*</label>
+          <input
+            id="bathrooms"
+            v-model.number="listing.bathrooms"
+            type="number"
+            placeholder="Enter amount"
+            required
+            v-if="listing && listing.location"
+          />
+        </div>
       </div>
       <!-- Input for Construction Year -->
       <div class="input-container">
@@ -152,11 +201,12 @@
           v-model="listing.description"
           placeholder="Enter description"
           required
+          rows="5"
           v-if="listing && listing.location"
         ></textarea>
       </div>
       <!-- SAVE -->
-      <button type="submit">Save</button>
+      <button type="submit" class="save-button">Save</button>
       <!-- Display error message -->
       <p v-if="error">{{ errorMessage }}</p>
     </form>
@@ -164,11 +214,13 @@
 </template>
 
 <script>
+// Imports
 import apiService from "@/api/apiService";
 import backIcon from "@/assets/ic_back_grey@3x.png";
 
 export default {
   data() {
+    // Initial data properties for the listing and form state
     return {
       backIcon,
       listing: {
@@ -188,7 +240,9 @@ export default {
       errorMessage: "",
     };
   },
+  // Lifecycle hook for initializing component data
   created() {
+    // Logic to fetch existing data for editing
     const houseId = this.$route.params.id;
     apiService
       .getHouseById(houseId)
@@ -206,12 +260,12 @@ export default {
       });
   },
   methods: {
+    // Fetches existing data to be edited
     loadExistingData() {
       const houseId = this.$route.params.id;
       apiService
         .getHouseById(houseId)
         .then((response) => {
-          // Assuming response.data has the structure { streetName, houseNumber, ... }
           this.listing = {
             streetName: response.data.streetName,
             houseNumber: response.data.houseNumber,
@@ -239,11 +293,34 @@ export default {
       // If no formatting is needed, return the original ZIP code
       return zipCode;
     },
-    // HandleImageUpload
-    handleImageUpload(event) {
-      this.listing.image = event.target.files[0];
+    // Handles file selection for image upload
+    triggerFileInput() {
+      this.$refs.fileInput.click();
     },
-    // Validation Forms
+
+    // Handle the file selection event
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        // Create a URL for the file to preview the image
+        this.imagePreviewUrl = URL.createObjectURL(file);
+        // You might need to update the listing object accordingly
+        this.listing.image = file;
+      }
+    },
+
+    // Clear the current image selection or existing image
+    clearImage() {
+      this.imagePreviewUrl = "";
+      if (this.listing.image) {
+        // Perform any additional cleanup if necessary
+        this.listing.image = null;
+      }
+      if (this.$refs.fileInput) {
+        this.$refs.fileInput.value = "";
+      }
+    },
+    // Validates the form data
     validateForm() {
       // Initialize the error state to false and clear any previous messages
       this.error = false;
@@ -316,7 +393,7 @@ export default {
       // If all checks pass, return true
       return true;
     },
-    // SUBMIT form
+    // Submits the form data
     submitForm() {
       // Format the zip code to include a space if needed
       this.listing.location.zip = this.formatZipCode(this.listing.location.zip);
@@ -375,5 +452,189 @@ export default {
 </script>
 
 <style scoped>
-/* Add styles similar to NewListingForm.vue */
+.edit-listing-page {
+  margin-top: 50px; /* Adjust as needed */
+  background-image: url("@/assets/img_background@3x.png");
+  background-size: cover;
+  background-position: center;
+  padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Montserrat", sans-serif;
+}
+.edit-listing-page h1 {
+  margin-top: 20px; /* Adjust this value as needed */
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #000000;
+  font-weight: bold;
+}
+/* Styles for header container */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 250px;
+  margin-top: 40px;
+}
+.back-to-overview {
+  display: flex;
+  align-items: center; /* This ensures that the image aligns nicely with the text */
+  margin-bottom: 1rem;
+  color: #4a4b4c;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+.back-to-overview img {
+  width: 18px;
+  height: auto;
+  margin-right: 0.5rem;
+}
+/* Styles for the form layout */
+.form-layout {
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/* Input field styles */
+.input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 420px;
+}
+/* Styles for labels */
+.input-container label {
+  align-self: flex-start; /* Aligns the label to the left */
+  margin-bottom: 5px;
+  font-size: 18px;
+}
+.input-container.half {
+  flex: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.input-container.half:first-child {
+  flex-basis: 200px;
+}
+.input-container.half:last-child {
+  flex-grow: 1;
+  margin-left: 10px;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+.row .input-container {
+  width: 200px; /* Smaller width for input containers inside a row */
+}
+.upload-label {
+  display: block;
+  margin-bottom: 10px;
+}
+.edit-listing-page textarea {
+  padding: 10px;
+  border: 1px;
+  border-radius: 5px;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  resize: none;
+}
+#description::placeholder {
+  /* targeting the placeholder inside the textarea */
+  font-family: inherit;
+  color: inherit;
+  opacity: 1;
+}
+#description {
+  font-family: "Montserrat", sans-serif;
+  color: #4a4b4c;
+  font-size: 14px;
+}
+/* Styles for individual input fields */
+.edit-listing-page input[type="text"],
+.edit-listing-page select,
+.edit-listing-page input[type="number"] {
+  padding: 15px;
+  border: 1px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+/* Styles for upload button wrapper */
+.upload-btn-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #ccc;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.btn-upload {
+  width: 30px;
+  height: auto; /* Adjust based on the desired height */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+/* Styles for image preview */
+.image-preview {
+  max-width: 100%;
+  max-height: 100px;
+  object-fit: contain;
+}
+.clear-image-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 10;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.clear-image-btn img {
+  width: 24px; /* Adjust size as needed */
+  height: 24px;
+}
+/* Styles for hidden file input */
+#image-upload {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.save-button {
+  background-color: #eb5440; /* Adjust button color as needed */
+  color: #fff; /* Adjust button text color as needed */
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-left: 250px;
+  width: 170px;
+  font-size: 18px;
+}
 </style>

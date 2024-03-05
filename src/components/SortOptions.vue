@@ -1,5 +1,7 @@
 <template>
+  <!-- Sort options container -->
   <div class="sort-options">
+    <!-- Button for sorting by price -->
     <button
       class="first"
       :class="{ active: activeSort === 'price' }"
@@ -7,6 +9,8 @@
     >
       Price
     </button>
+
+    <!-- Button for sorting by size -->
     <button
       class="second"
       :class="{ active: activeSort === 'size' }"
@@ -19,6 +23,7 @@
 
 <script>
 export default {
+  // Component properties
   props: {
     activeSort: String,
   },

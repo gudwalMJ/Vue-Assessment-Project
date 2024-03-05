@@ -1,31 +1,33 @@
 <template>
   <div class="content-container">
-    <!-- Title -->
+    <!-- Title and navigation to create new listing -->
     <div class="title-container">
       <h1 class="title">Houses</h1>
-      <!-- Toggle button for showing the create listing form -->
       <router-link to="/new-listing" class="create-listing-button"
         ><img :src="plusIcon" alt="Create New" class="plus-icon" /> Create
         New</router-link
       >
-      <!-- Create listing form -->
+      <!-- Show form to create a new listing -->
       <div v-if="showCreateForm">
         <NewListingForm @listing-created="handleListingCreated" />
       </div>
     </div>
-    <!-- Search and sort -->
+
+    <!-- Search bar and sorting options -->
     <div class="search-and-sort-container">
       <SearchBar :query="searchQuery" @update:query="searchQuery = $event" />
 
       <SortOptions :activeSort="activeSort" @updateSort="updateSortMethod" />
     </div>
-    <!-- Result indication -->
+
+    <!-- Indication of search results -->
     <div v-if="searchQuery" class="results-indication">
       <p v-if="filteredHouses.length">
         {{ filteredHouses.length }} results found
       </p>
     </div>
-    <!-- Houses list -->
+
+    <!-- List of houses -->
     <div class="houses" v-if="filteredHouses.length">
       <div
         v-for="house in filteredHouses"
@@ -33,12 +35,13 @@
         class="house"
         @click="goToHouseDetails(house.id)"
       >
+        <!-- House image -->
         <img
           :src="house.image || placeholderImage"
           alt="House image"
           class="house-image"
         />
-
+        <!-- House details -->
         <div class="details">
           <p class="street">
             {{
@@ -57,6 +60,8 @@
             <img :src="sizeIcon" alt="Size" /> {{ house.size }} m2
           </p>
         </div>
+
+        <!-- Actions for editing and deleting a listing -->
         <div class="house-footer" v-if="house.madeByMe">
           <router-link
             :to="{ name: 'EditListingForm', params: { id: house.id } }"
@@ -65,7 +70,7 @@
             <img src="@/assets/ic_edit@3x.png" alt="Edit" />
           </router-link>
           <button
-            @click.stop="deleteListing(house.id)"
+            @click.stop="askDeleteConfirmation(house.id)"
             class="action-button delete"
           >
             <img src="@/assets/ic_delete@3x.png" alt="Delete" />
@@ -73,7 +78,8 @@
         </div>
       </div>
     </div>
-    <!-- Empty state -->
+
+    <!-- State when no results are found -->
     <div v-else-if="searchQuery" class="empty-state-container">
       <img
         src="@/assets/img_empty_houses@3x.png"
@@ -83,6 +89,16 @@
       <p>No results found.</p>
       <p>Please try another keyword.</p>
     </div>
+
+    <!-- Confirmation dialog for deletion -->
+    <ConfirmationDialog
+      :isVisible="showConfirmationDialog"
+      title="Delete Listing"
+      messagePartOne="Are you sure you want to delete this listing?"
+      messagePartTwo="This action cannot be undone."
+      @confirm="confirmDeletion"
+      @cancel="cancelDeletion"
+    />
   </div>
 </template>
 
@@ -92,6 +108,7 @@ import apiService from "@/api/apiService";
 import SearchBar from "@/components/SearchBar.vue";
 import SortOptions from "@/components/SortOptions.vue";
 import NewListingForm from "@/components/NewListingForm.vue";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 // Import the placeholder image for houses
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
 // Import the images/icons
@@ -105,6 +122,7 @@ export default {
     SearchBar,
     SortOptions,
     NewListingForm,
+    ConfirmationDialog,
   },
   data() {
     return {
@@ -117,6 +135,8 @@ export default {
       searchQuery: "",
       activeSort: null,
       showCreateForm: false,
+      showConfirmationDialog: false,
+      houseToDelete: null,
     };
   },
   computed: {
@@ -184,26 +204,42 @@ export default {
       this.$router.push({ name: "EditListingForm", params: { id: houseId } });
     },
     // Delete listing
-    deleteListing(houseId) {
-      // This method will handle the deletion of a house listing
-      if (confirm("Are you sure you want to delete this listing?")) {
+    askDeleteConfirmation(houseId) {
+      this.houseToDelete = houseId;
+      this.showConfirmationDialog = true; // Show the confirmation dialog
+    },
+
+    confirmDeletion() {
+      if (this.houseToDelete) {
         apiService
-          .deleteHouse(houseId)
+          .deleteHouse(this.houseToDelete)
           .then(() => {
             alert("Listing deleted successfully.");
             this.fetchHouses(); // Refresh the list after deletion
+            this.closeConfirmationDialog(); // Reset the dialog state
           })
           .catch((error) => {
             console.error("Error deleting listing:", error);
             alert("Failed to delete listing.");
+            this.closeConfirmationDialog(); // Reset the dialog state
           });
       }
+    },
+
+    cancelDeletion() {
+      this.closeConfirmationDialog(); // Reset the dialog state when user cancels
+    },
+
+    closeConfirmationDialog() {
+      this.showConfirmationDialog = false;
+      this.houseToDelete = null; // Reset the house to delete
     },
   },
 };
 </script>
 
 <style scoped>
+/* General layout and container styles */
 .content-container {
   padding-top: 60px;
   padding-bottom: 60px;
@@ -294,6 +330,7 @@ export default {
   object-fit: cover;
   border-radius: 5px;
   margin-right: 10px;
+  cursor: pointer;
 }
 .details {
   display: flex;
@@ -338,6 +375,7 @@ export default {
   padding: 5px;
   margin-top: -120px;
 }
+/* Styling for action buttons (edit and delete) */
 .action-button {
   border: none;
   background: none;

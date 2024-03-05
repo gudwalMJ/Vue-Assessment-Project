@@ -1,7 +1,8 @@
-<!-- NAVBAR -->
 <template>
+  <!-- Navigation bar -->
   <nav class="navbar">
     <div class="container">
+      <!-- Brand/logo area -->
       <div class="navbar-brand">
         <img
           src="@/assets/img_logo_dtt@3x.png"
@@ -9,13 +10,16 @@
           class="navbar-logo"
         />
       </div>
+      <!-- Navigation menu -->
       <div class="navbar-menu">
+        <!-- Navigation item for Houses page -->
         <router-link
           to="/"
           class="navbar-item"
           :class="{ 'is-active': activePage === 'Houses' }"
           >Houses</router-link
         >
+        <!-- Navigation item for About page -->
         <router-link
           to="/about"
           class="navbar-item"
@@ -31,12 +35,13 @@
 export default {
   data() {
     return {
-      activePage: "Houses",
+      activePage: "Houses", // Current active page for styling active navbar item
     };
   },
   watch: {
+    // Watch for route changes to update active navbar item
     $route(to) {
-      this.activePage = to.name;
+      this.activePage = to.name; // Update activePage based on route name
     },
   },
 };

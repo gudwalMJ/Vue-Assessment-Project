@@ -1,61 +1,94 @@
-# dtt-assessment-front-end
+# DTT Real Estate Web App
 
-## Project setup
+## Overview
 
-```
+DTT Real Estate Web App is a user-friendly platform designed to facilitate the browsing and management of real estate listings. It provides users with the ability to search for houses, sort listings, and gain detailed information about each property.
+
+## Features
+
+- **Listings Browsing**: Users can browse through a list of available houses.
+- **Search Functionality**: The app includes a search bar for users to find houses based on keywords.
+- **Sorting Options**: Houses can be sorted by price or size.
+- **Detailed View**: Clicking on a house card brings up detailed information about the property.
+
+## Technologies
+
+- **Vue.js**: A progressive JavaScript framework used for building user interfaces.
+- **Vue Router**: The official router for Vue.js that makes building single-page applications easy.
+- **ESLint**: A static code analysis tool for identifying problematic patterns found in JavaScript code.
+
+## Project Setup
+
+To get started with the project, clone the repository to your local machine:
+
+```bash
+git clone https://github.com/gudwalMJ/dtt-assessment-front-end
+
+Navigate to the project directory:
+cd dtt-real-estate
+
+Install dependencies:
 npm install
-```
 
-### Compiles and hot-reloads for development
-
-```
+Serve with hot reload at localhost:8080:
 npm run serve
+
+Pages
+
+    Houses: Displays the list of houses with search and sort functionality.
+    About: Provides information about the app and the developer.
+
+Components
+
+    SearchBar: Allows users to search for listings.
+    SortOptions: Lets users sort listings by different criteria.
+    ConfirmationDialog: Used to confirm actions such as deleting a listing.
+
 ```
 
-### Compiles and minifies for production
+# Project Timeline
 
-```
-npm run build
-```
+## Day 1 (Started: 28/02 @ 10am)
 
-### Lints and fixes files
+- @ 10:30: Repository was set up.
+- @ 11:30: Story 1 was finished.
+- @ 12:30: Story 2 was finished.
+- @ 13:30: Story 3 was finished.
+- @ 13:30: Stopped.
 
-```
-npm run lint
-```
+## Day 2
 
-### Customize configuration
+- @ 10:30: Started.
+- @ 12:00: Story 4 was finished.
+- @ 13:30: Story 5 was finished.
+- @ 13:30-14:00: Break.
+- @ 16:00: Story 6 was finished - Had issues in the begining of it.
+- @ 16:00: Stopped.
 
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Day 3
 
-Started the project on 28/02 @ 10am
-Day1
-@ 1030 repository was set up
-@ 1130 Story 1 was finished
-@ 1230 Story 2 was finished
-@ 1330 Story 3 was finished
-@ 1330 Stop
-Day2
-@ 1030 Started
-@ 1200 Story 4 was finished
-@ 1330 Story 5 was finished
-@ 1330-1400 Break
-@ 1600 Story 6 was finished (Caused issues)
-@ 1600 Stop
-Day3
-@ 0915 Started with User Story7
-@ 1015 Story9 finished - Story 7/8 Edit doesnt work
-@ 1030 Break till @1100
-@ 1100 Started CSS
-@ 1300 Stop
-Day4
-@ 1030 Started Story 7/8
-@ 1200 Finished Story 7/8/9
-@ 1200 Started with CSS
-@ 1400 Lunch Break
-@ 1500 Continue with CSS
-@ 1630 Stop
-Day5
-@ 1030 Started with CSS on Create new listing
-@ 1140 Finished with CSS on Create new listing
-@ 1200 Started with CSS on Edit listing
+- @ 09:15: Started with User Story 7.
+- @ 10:15: Story 9 finished - Story 7/8 Had issues with Edit, after the email had more clarity.
+- @ 10:30: Break till 11:00.
+- @ 11:00: Started on HomePage CSS.
+- @ 13:00: Stopped.
+
+## Day 4
+
+- @ 10:30: Started Story 7/8.
+- @ 12:00: Finished Story 7/8/9.
+- @ 12:00: Started with HoseDetails CSS.
+- @ 14:00: Lunch Break.
+- @ 15:00: Continued with HoseDetails CSS.
+- @ 16:30: Stopped.
+
+## Day 5
+
+- @ 10:30: Started with CSS on Create new listing.
+- @ 11:40: Finished with CSS on Create new listing.
+- @ 12:00-13:00: Started with CSS on Edit listing.
+- @ 13:00: Lunch Break.
+- @ 14:00: Continued with CSS on Edit listing.
+- @ 15:00: Edit listing CSS Done.
+- @ 15:00: Started cleaning code.
+- @ 16:30: Finished, also added About Page.

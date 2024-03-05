@@ -1,22 +1,29 @@
 <template>
+  <!-- Main container for the house details page -->
   <div class="house-details-page">
+    <!-- House details section -->
     <div class="house-details">
+      <!-- Back to overview link -->
       <a href="/" class="back-to-overview"
         ><img :src="backIcon" alt="back" />Back to overview</a
       >
-
+      <!-- House image container -->
       <div class="house-image-container">
         <img :src="house?.image || placeholderImage" alt="House image" />
       </div>
-
+      <!-- House content section -->
       <div class="house-content">
+        <!-- House title and action buttons -->
         <div class="title-and-actions">
           <h2 class="house-title">
+            <!-- House address -->
             {{ house?.location?.street }} {{ house?.location?.houseNumber }}
+            <!-- House number addition if present -->
             <span v-if="house?.location?.houseNumberAddition">
               {{ house?.location?.houseNumberAddition }}
             </span>
           </h2>
+          <!-- Edit and delete actions if the house is made by the user -->
           <div class="house-actions" v-if="house.madeByMe">
             <router-link
               :to="{ name: 'EditListingForm', params: { id: house.id } }"
@@ -24,7 +31,10 @@
             >
               <img src="@/assets/ic_edit@3x.png" alt="Edit" />
             </router-link>
-            <button @click="deleteListing(house.id)" class="action-button">
+            <button
+              @click="askDeleteConfirmation(house.id)"
+              class="action-button"
+            >
               <img src="@/assets/ic_delete@3x.png" alt="Delete" />
             </button>
           </div>
@@ -69,13 +79,23 @@
         </div>
       </div>
     </div>
+    <!-- Confirmation dialog component for deletion confirmation -->
+    <ConfirmationDialog
+      :isVisible="showConfirmationDialog"
+      title="Delete Listing"
+      messagePartOne="Are you sure you want to delete this listing?"
+      messagePartTwo="This action cannot be undone."
+      @confirm="confirmDeletion"
+      @cancel="cancelDeletion"
+    />
   </div>
 </template>
 
 <script>
-// Imports
+// Component and assets imports
 import apiService from "@/api/apiService";
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
+import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 // Import the images/icons
 import backIcon from "@/assets/ic_back_grey@3x.png";
 import garageIcon from "@/assets/ic_garage@3x.png";
@@ -87,6 +107,7 @@ import sizeIcon from "@/assets/ic_size@3x.png";
 import constructionIcon from "@/assets/ic_construction_date@3x.png";
 
 export default {
+  components: { ConfirmationDialog },
   data() {
     return {
       backIcon,
@@ -114,12 +135,15 @@ export default {
         hasGarage: false, // Assuming a boolean
       },
       placeholderImage,
+      showConfirmationDialog: false,
+      houseToDelete: null,
     };
   },
   created() {
     this.fetchHouseDetails();
   },
   methods: {
+    // Fetches house details based on the route parameter id
     fetchHouseDetails() {
       const houseId = this.$route.params.id;
       apiService
@@ -131,29 +155,48 @@ export default {
           } else {
             console.error("House data is empty");
             // Handle the case where the house data is empty or not what you expect
-            // You might want to set `house` back to its default state or show an error message
           }
         })
         .catch((error) => {
           console.error("Error fetching house details:", error);
         });
     },
+    // Navigates to the edit page for the current house
     navigateToEditPage(houseId) {
       this.$router.push({ name: "EditListingForm", params: { id: houseId } });
     },
-    deleteListing(houseId) {
-      if (confirm("Are you sure you want to delete this listing?")) {
+    // Triggers the confirmation dialog for deletion
+    askDeleteConfirmation(houseId) {
+      this.houseToDelete = houseId;
+      this.showConfirmationDialog = true; // Show the confirmation dialog
+    },
+    // Confirms the deletion of the house and performs API call
+    confirmDeletion() {
+      if (this.houseToDelete) {
         apiService
-          .deleteHouse(houseId)
+          .deleteHouse(this.houseToDelete)
           .then(() => {
             alert("Listing deleted successfully.");
+
             this.$router.push({ name: "Houses" });
           })
           .catch((error) => {
             console.error("Error deleting listing:", error);
             alert("Failed to delete listing.");
+          })
+          .finally(() => {
+            this.closeConfirmationDialog(); // Ensure dialog is closed in either case
           });
       }
+    },
+    // Cancels the deletion process and hides the confirmation dialog
+    cancelDeletion() {
+      this.closeConfirmationDialog(); // Reset the dialog state when user cancels
+    },
+    // Resets the confirmation dialog state
+    closeConfirmationDialog() {
+      this.showConfirmationDialog = false;
+      this.houseToDelete = null; // Reset the house to delete
     },
   },
 };
@@ -235,9 +278,9 @@ export default {
   font-size: 16px;
 }
 .icon {
-  width: 20px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 5px; /* Adjust the spacing between icon and text */
+  width: 20px;
+  height: auto;
+  margin-right: 5px;
   margin-left: -10px;
   vertical-align: middle;
 }

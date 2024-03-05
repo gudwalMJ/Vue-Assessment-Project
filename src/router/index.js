@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Houses from "../views/HousesView.vue";
-import HouseDetails from "../views/HouseDetails.vue";
+import Houses from "../views/HomePage.vue";
+import HouseDetails from "../views/HouseDetailsPage.vue";
 import NewListingForm from "../components/NewListingForm.vue";
-import AboutPage from "../pages/AboutPage.vue";
+import AboutPage from "../views/AboutPage.vue";
 
 const routes = [
   {

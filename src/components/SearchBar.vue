@@ -1,11 +1,14 @@
 <template>
+  <!-- Search bar container -->
   <div class="search-bar">
+    <!-- Input field for search query -->
     <input
       v-model="localQuery"
       @input="$emit('update:query', localQuery)"
       placeholder="Search for a house"
       class="search-input"
     />
+    <!-- Clear search icon, shown when there is a query -->
     <img
       v-if="localQuery"
       src="@/assets/ic_clear@3x.png"
@@ -22,17 +25,19 @@ import searchIcon from "@/assets/ic_search@3x.png";
 import clearIcon from "@/assets/ic_clear@3x.png";
 
 export default {
+  // Component receives a 'query' prop from the parent
   props: {
     query: String,
   },
   data() {
     return {
-      localQuery: this.query,
+      localQuery: this.query, // Local reactive property for the search input
       searchIcon,
       clearIcon,
     };
   },
   methods: {
+    // Method to clear the search query
     clearSearch() {
       this.localQuery = "";
       this.$emit("update:query", this.localQuery);

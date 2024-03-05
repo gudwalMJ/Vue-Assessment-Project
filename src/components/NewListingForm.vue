@@ -85,8 +85,23 @@
             src="@/assets/ic_upload@3x.png"
             alt="Upload"
             class="btn-upload"
+            @click="triggerFileInput"
           />
-          <input type="file" id="image-upload" @change="handleImageUpload" />
+          <button
+            v-if="imagePreviewUrl"
+            @click="clearImage"
+            type="button"
+            class="clear-image-btn"
+          >
+            <img src="@/assets/ic_clear_white@3x.png" alt="Clear" />
+          </button>
+          <input
+            type="file"
+            id="image-upload"
+            @change="handleImageUpload"
+            ref="fileInput"
+            hidden
+          />
         </div>
       </div>
 
@@ -171,6 +186,7 @@
       </div>
       <!-- Submit button -->
       <button
+        class="submit-button"
         type="submit"
         :disabled="!formValid"
         :class="{ 'button-active': formValid }"
@@ -316,13 +332,20 @@ export default {
         });
     },
     // Handles file selection for image upload
+    triggerFileInput() {
+      this.$refs.fileInput.click();
+    },
     handleImageUpload(event) {
       const file = event.target.files[0];
       if (file) {
-        this.listing.image = file; // Set the file to your data property if needed
-        // Create a URL for the file to preview the image
+        this.listing.image = file; // Adjust according to how you handle the image in your data
         this.imagePreviewUrl = URL.createObjectURL(file);
       }
+    },
+    clearImage() {
+      this.imagePreviewUrl = ""; // Clear the preview
+      this.listing.image = null; // Clear the image from the data
+      this.$refs.fileInput.value = ""; // Reset the file input
     },
   },
 };
@@ -338,6 +361,13 @@ export default {
   margin-left: auto;
   margin-right: auto;
   font-family: "Montserrat", sans-serif;
+}
+.new-listing-page h1 {
+  margin-top: 20px; /* Adjust this value as needed */
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #000000;
+  font-weight: bold;
 }
 /* Styles for header container */
 .header-container {
@@ -361,13 +391,7 @@ export default {
   height: auto;
   margin-right: 0.5rem;
 }
-.new-listing-page h1 {
-  margin-top: 20px; /* Adjust this value as needed */
-  margin-bottom: 30px;
-  font-size: 32px;
-  color: #000000;
-  font-weight: bold;
-}
+
 /* Styles for the form layout */
 .form-layout {
   margin-left: 250px;
@@ -453,7 +477,7 @@ input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
 /* Styles for buttons */
-.new-listing-page button {
+.submit-button {
   background-color: #eb5440; /* Adjust button color as needed */
   color: #fff; /* Adjust button text color as needed */
   border: none;
@@ -469,7 +493,7 @@ input[type="number"] {
   background-color: #eb5440;
   color: #fff;
 }
-.new-listing-page button:disabled {
+.submit-button:disabled {
   background-color: #cccccc; /* A grayed out color indicating it is disabled */
   cursor: not-allowed;
 }
@@ -501,6 +525,24 @@ input[type="number"] {
   max-width: 100%;
   max-height: 100px;
   object-fit: contain;
+}
+.clear-image-btn {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  z-index: 10;
+  border: none;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.clear-image-btn img {
+  width: 24px; /* Adjust size as needed */
+  height: 24px;
 }
 /* Styles for hidden file input */
 #image-upload {
