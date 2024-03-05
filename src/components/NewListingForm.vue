@@ -1,13 +1,17 @@
 <template>
   <div class="new-listing-page">
-    <a href="/" class="back-to-overview"
-      ><img :src="backIcon" alt="back" />Back to overview</a
-    >
-    <h1>Create New Listing</h1>
+    <!-- Header section with back navigation and page title -->
+    <div class="header-container">
+      <a href="/" class="back-to-overview">
+        <img :src="backIcon" alt="back" />Back to overview
+      </a>
+      <h1>Create new listing</h1>
+    </div>
+    <!-- Form layout for various listing creation -->
     <form @submit.prevent="submitForm" class="form-layout">
       <!-- Input field for street name -->
       <div class="input-container">
-        <label for="street-name">Street Name*</label>
+        <label for="street-name">Street name*</label>
         <input
           id="street-name"
           v-model.trim="listing.streetName"
@@ -19,7 +23,7 @@
       <!-- Input field for house number -->
       <div class="row">
         <div class="input-container half">
-          <label for="house-number">House Number*</label>
+          <label for="house-number">House number*</label>
           <input
             id="house-number"
             v-model.trim="listing.houseNumber"
@@ -41,7 +45,7 @@
       </div>
       <!-- Input field for ZIP code -->
       <div class="input-container">
-        <label for="zip-code">ZIP Code*</label>
+        <label for="zip-code">Postal code*</label>
         <input
           id="zip-code"
           v-model.trim="listing.zip"
@@ -63,11 +67,29 @@
           required
         />
       </div>
+
       <!-- Input field for Image -->
       <div class="input-container">
-        <label for="image">Upload picture (PNG or JPG)*</label>
-        <input type="file" @change="handleImageUpload" />
+        <label for="image-upload" class="upload-label"
+          >Upload picture (PNG or JPG)*</label
+        >
+        <div class="upload-btn-wrapper">
+          <img
+            v-if="imagePreviewUrl"
+            :src="imagePreviewUrl"
+            alt="Image preview"
+            class="image-preview"
+          />
+          <img
+            v-else
+            src="@/assets/ic_upload@3x.png"
+            alt="Upload"
+            class="btn-upload"
+          />
+          <input type="file" id="image-upload" @change="handleImageUpload" />
+        </div>
       </div>
+
       <!-- Input field for price -->
       <div class="input-container">
         <label for="price">Price*</label>
@@ -95,6 +117,7 @@
         <div class="input-container half">
           <label for="garage-select">Garage*</label>
           <select id="garage-select" v-model="listing.garage" required>
+            <option value="" disabled selected>Select</option>
             <option value="true">Yes</option>
             <option value="false">No</option>
           </select>
@@ -143,7 +166,7 @@
           v-model.trim="listing.description"
           placeholder="Enter description"
           required
-          rows="4"
+          rows="5"
         ></textarea>
       </div>
       <!-- Submit button -->
@@ -169,6 +192,7 @@ import backIcon from "@/assets/ic_back_grey@3x.png";
 
 export default {
   data() {
+    // Initial data properties for the listing and form state
     return {
       backIcon,
       listing: {
@@ -188,10 +212,14 @@ export default {
       },
       error: false,
       errorMessage: "",
+      selectedFileName: "",
+      imagePreviewUrl: "",
     };
   },
   computed: {
+    // Computed property to determine if the form is valid for submission
     formValid() {
+      // Logic to determine form validity
       return (
         this.listing.streetName.trim() !== "" &&
         this.listing.houseNumber !== null && // Assuming houseNumber is initialized as null
@@ -210,17 +238,17 @@ export default {
     },
   },
   methods: {
+    // Validates form data
     validateForm() {
-      // Example of custom validation logic
+      // Custom validation logic
       if (this.listing.price <= 0) {
         this.error = true;
         this.errorMessage = "Price must be greater than zero.";
         return false;
       }
-      // Add other validation checks as necessary
       return true; // Form is valid
     },
-
+    // Submits the form data
     submitForm() {
       // Reset error state before new submission attempt
       this.error = false;
@@ -230,7 +258,6 @@ export default {
         // Stop the form submission if validation fails
         return;
       }
-
       // Construct FormData for the API call
       let formData = new FormData();
       formData.append("streetName", this.listing.streetName);
@@ -288,15 +315,20 @@ export default {
           }
         });
     },
+    // Handles file selection for image upload
     handleImageUpload(event) {
-      // Handle the image file
       const file = event.target.files[0];
-      this.listing.image = file;
+      if (file) {
+        this.listing.image = file; // Set the file to your data property if needed
+        // Create a URL for the file to preview the image
+        this.imagePreviewUrl = URL.createObjectURL(file);
+      }
     },
   },
 };
 </script>
 <style scoped>
+/* Main styles for the new listing page */
 .new-listing-page {
   margin-top: 50px; /* Adjust as needed */
   background-image: url("@/assets/img_background@3x.png");
@@ -305,21 +337,44 @@ export default {
   padding: 20px;
   margin-left: auto;
   margin-right: auto;
+  font-family: "Montserrat", sans-serif;
 }
+/* Styles for header container */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 250px;
+  margin-top: 40px;
+}
+.back-to-overview {
+  display: flex;
+  align-items: center; /* This ensures that the image aligns nicely with the text */
+  margin-bottom: 1rem;
+  color: #4a4b4c;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+.back-to-overview img {
+  width: 18px;
+  height: auto;
+  margin-right: 0.5rem;
+}
+.new-listing-page h1 {
+  margin-top: 20px; /* Adjust this value as needed */
+  margin-bottom: 30px;
+  font-size: 32px;
+  color: #000000;
+  font-weight: bold;
+}
+/* Styles for the form layout */
 .form-layout {
   margin-left: 250px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 }
-.new-listing-page h1 {
-  margin-top: 50px;
-  margin-bottom: 50px;
-  font-size: 32px;
-  color: #000000; /* Adjust text color as needed */
-  font-weight: bold;
-}
-
 /* Input field styles */
 .input-container {
   display: flex;
@@ -327,6 +382,7 @@ export default {
   margin-bottom: 20px;
   width: 420px;
 }
+/* Styles for labels */
 .input-container label {
   align-self: flex-start; /* Aligns the label to the left */
   margin-bottom: 5px;
@@ -361,17 +417,28 @@ export default {
   box-sizing: border-box;
   resize: none;
 }
+#description::placeholder {
+  /* targeting the placeholder inside the textarea */
+  font-family: inherit;
+  color: inherit;
+  opacity: 1;
+}
+#description {
+  font-family: "Montserrat", sans-serif;
+  color: #4a4b4c;
+  font-size: 14px;
+}
 
 .new-listing-page label {
   display: block;
   margin-bottom: 5px;
   color: #333;
 }
-
+/* Styles for individual input fields */
 .new-listing-page input[type="text"],
 .new-listing-page select,
 .new-listing-page input[type="number"] {
-  padding: 10px;
+  padding: 15px;
   border: 1px;
   border-radius: 5px;
   box-sizing: border-box;
@@ -385,7 +452,7 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
-
+/* Styles for buttons */
 .new-listing-page button {
   background-color: #eb5440; /* Adjust button color as needed */
   color: #fff; /* Adjust button text color as needed */
@@ -405,5 +472,44 @@ input[type="number"] {
 .new-listing-page button:disabled {
   background-color: #cccccc; /* A grayed out color indicating it is disabled */
   cursor: not-allowed;
+}
+.upload-label {
+  display: block;
+  margin-bottom: 10px;
+}
+/* Styles for upload button wrapper */
+.upload-btn-wrapper {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 2px dashed #ccc;
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.btn-upload {
+  width: 30px;
+  height: auto; /* Adjust based on the desired height */
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+/* Styles for image preview */
+.image-preview {
+  max-width: 100%;
+  max-height: 100px;
+  object-fit: contain;
+}
+/* Styles for hidden file input */
+#image-upload {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 }
 </style>

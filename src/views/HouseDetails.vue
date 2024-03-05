@@ -170,7 +170,7 @@ export default {
 .house-details {
   max-width: 800px;
   margin: 2rem auto;
-  font-family: "Arial", sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .back-to-overview {

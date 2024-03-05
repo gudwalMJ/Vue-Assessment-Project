@@ -34,21 +34,28 @@ Day1
 @ 1130 Story 1 was finished
 @ 1230 Story 2 was finished
 @ 1330 Story 3 was finished
+@ 1330 Stop
 Day2
-@1030 Started
-@1200 Story 4 was finished
-@1330 Story 5 was finished
-@1330-1400 Break
-@1600 Story 6 was finished (Caused issues)
+@ 1030 Started
+@ 1200 Story 4 was finished
+@ 1330 Story 5 was finished
+@ 1330-1400 Break
+@ 1600 Story 6 was finished (Caused issues)
+@ 1600 Stop
 Day3
-@0915 Started with User Story7
-@1015 Story9 finished - Story 7/8 Edit doesnt work
-@1030 Break till @1100
-@1100 Started CSS
+@ 0915 Started with User Story7
+@ 1015 Story9 finished - Story 7/8 Edit doesnt work
+@ 1030 Break till @1100
+@ 1100 Started CSS
+@ 1300 Stop
 Day4
-@1030 Started Story 7/8
-@1200 Finished Story 7/8/9
-@1200 Started with CSS
-@1400 Lunch Break
-@1500 Continue with CSS
-@1630 Stop
+@ 1030 Started Story 7/8
+@ 1200 Finished Story 7/8/9
+@ 1200 Started with CSS
+@ 1400 Lunch Break
+@ 1500 Continue with CSS
+@ 1630 Stop
+Day5
+@ 1030 Started with CSS on Create new listing
+@ 1140 Finished with CSS on Create new listing
+@ 1200 Started with CSS on Edit listing
