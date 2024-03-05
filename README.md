@@ -55,6 +55,7 @@ Components
 - @ 12:30: Story 2 was finished.
 - @ 13:30: Story 3 was finished.
 - @ 13:30: Stopped.
+- Total 3 hours
 
 ## Day 2
 
@@ -64,6 +65,7 @@ Components
 - @ 13:30-14:00: Break.
 - @ 16:00: Story 6 was finished - Had issues in the begining of it.
 - @ 16:00: Stopped.
+- Total 3 hours
 
 ## Day 3
 
@@ -72,6 +74,7 @@ Components
 - @ 10:30: Break till 11:00.
 - @ 11:00: Started on HomePage CSS.
 - @ 13:00: Stopped.
+- Total 3 hours
 
 ## Day 4
 
@@ -81,6 +84,7 @@ Components
 - @ 14:00: Lunch Break.
 - @ 15:00: Continued with HoseDetails CSS.
 - @ 16:30: Stopped.
+- Total 5 hours
 
 ## Day 5
 
@@ -92,3 +96,6 @@ Components
 - @ 15:00: Edit listing CSS Done.
 - @ 15:00: Started cleaning code.
 - @ 16:30: Finished, also added About Page.
+- Total 5 hours
+
+TOTAL HOURS: 19 Hours
