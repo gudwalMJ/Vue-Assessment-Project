@@ -94,4 +94,14 @@ export default {
 .dialog-actions button:last-child {
   background-color: #4a4b4c; /* HEX color for the 'GO BACK' button */
 }
+/* Media query for devices with width up to 414px */
+@media (max-width: 414px) {
+  .confirmation-dialog {
+    width: 90%;
+    padding: 15px;
+  }
+  .dialog-actions button {
+    padding: 8px 15px;
+  }
+}
 </style>

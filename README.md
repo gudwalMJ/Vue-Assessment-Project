@@ -110,3 +110,5 @@ TOTAL HOURS: 19 Hours
 - @ 14:00 NewListingForm done
 - @ 14:30 EditListingForm done
 - @ 15:00 HouseDetailsPage done
+- @ 15:30 ConfirmationDialog done
+- @ 16:00 AboutPage done

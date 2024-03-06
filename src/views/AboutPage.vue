@@ -93,4 +93,28 @@ export default {
 .dtt-link:hover {
   text-decoration: underline;
 }
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .content-container {
+    margin-left: 0;
+    padding: 50px 20px;
+  }
+
+  .design-and-development {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .dtt-logo {
+    margin-bottom: 20px;
+  }
+
+  .developer-info p,
+  .about-page h1,
+  .about-page h2,
+  .about-page p {
+    font-size: 14px;
+  }
+}
 </style>
