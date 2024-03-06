@@ -5,9 +5,9 @@
     <div class="house-details">
       <!-- Back to overview link -->
       <a href="/" class="back-to-overview">
-        <img :src="isMobile ? backIconMobile : backIcon" alt="Back" /> Back to
-        overview</a
-      >
+        <img :src="isMobile ? backIconMobile : backIcon" alt="Back" />
+        <span v-if="!isMobile">Back to overview</span>
+      </a>
       <!-- House image container -->
       <div class="house-image-container">
         <img :src="house?.image || placeholderImage" alt="House image" />
@@ -30,13 +30,16 @@
               :to="{ name: 'EditListingForm', params: { id: house.id } }"
               class="action-button"
             >
-              <img src="@/assets/ic_edit@3x.png" alt="Edit" />
+              <img :src="isMobile ? editIconMobile : editIcon" alt="Edit" />
             </router-link>
             <button
               @click="askDeleteConfirmation(house.id)"
               class="action-button"
             >
-              <img src="@/assets/ic_delete@3x.png" alt="Delete" />
+              <img
+                :src="isMobile ? deleteIconMobile : deleteIcon"
+                alt="Delete"
+              />
             </button>
           </div>
         </div>
@@ -100,6 +103,8 @@ import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 // Import the images/icons
 import backIcon from "@/assets/ic_back_grey@3x.png";
 import backIconMobile from "@/assets/ic_back_white@3x.png";
+import editIcon from "@/assets/ic_edit@3x.png";
+import deleteIcon from "@/assets/ic_delete@3x.png";
 import editIconMobile from "@/assets/ic_edit_white@3x.png";
 import deleteIconMobile from "@/assets/ic_delete_white@3x.png";
 import garageIcon from "@/assets/ic_garage@3x.png";
@@ -116,8 +121,11 @@ export default {
     return {
       backIcon,
       backIconMobile,
+      editIcon,
       editIconMobile,
+      deleteIcon,
       deleteIconMobile,
+      isMobile: false,
       garageIcon,
       bedIcon,
       bathIcon,
@@ -149,7 +157,17 @@ export default {
   created() {
     this.fetchHouseDetails();
   },
+  mounted() {
+    this.checkMobile();
+    window.addEventListener("resize", this.checkMobile);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.checkMobile);
+  },
   methods: {
+    checkMobile() {
+      this.isMobile = window.innerWidth <= 414;
+    },
     // Fetches house details based on the route parameter id
     fetchHouseDetails() {
       const houseId = this.$route.params.id;
@@ -370,6 +388,10 @@ export default {
     top: -240px;
     right: 20px;
     z-index: 10;
+  }
+  .action-button img {
+    width: 12px;
+    height: auto;
   }
   .house-image-container {
     margin-top: 0;
