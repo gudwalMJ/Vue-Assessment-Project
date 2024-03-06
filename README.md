@@ -100,6 +100,8 @@ Components
 
 TOTAL HOURS: 19 Hours
 
+## Day 6
+
 - Started on phone responsivness @ 1130
 - @ 11:30 Navbar done
 - @ 11:50 Searchbar done
