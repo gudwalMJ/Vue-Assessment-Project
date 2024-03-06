@@ -4,8 +4,9 @@
     <!-- House details section -->
     <div class="house-details">
       <!-- Back to overview link -->
-      <a href="/" class="back-to-overview"
-        ><img :src="backIcon" alt="back" />Back to overview</a
+      <a href="/" class="back-to-overview">
+        <img :src="isMobile ? backIconMobile : backIcon" alt="Back" /> Back to
+        overview</a
       >
       <!-- House image container -->
       <div class="house-image-container">
@@ -98,6 +99,9 @@ import placeholderImage from "@/assets/img_placeholder_house@3x.png";
 import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 // Import the images/icons
 import backIcon from "@/assets/ic_back_grey@3x.png";
+import backIconMobile from "@/assets/ic_back_white@3x.png";
+import editIconMobile from "@/assets/ic_edit_white@3x.png";
+import deleteIconMobile from "@/assets/ic_delete_white@3x.png";
 import garageIcon from "@/assets/ic_garage@3x.png";
 import bedIcon from "@/assets/ic_bed@3x.png";
 import bathIcon from "@/assets/ic_bath@3x.png";
@@ -111,6 +115,9 @@ export default {
   data() {
     return {
       backIcon,
+      backIconMobile,
+      editIconMobile,
+      deleteIconMobile,
       garageIcon,
       bedIcon,
       bathIcon,
@@ -340,45 +347,47 @@ export default {
   align-items: center;
   font-size: 22px;
 }
-.house-details-page {
-  padding-top: 0; /* Remove top padding on mobile */
-  padding-bottom: 60px; /* Add more padding at bottom to lift the button */
-  /* Other mobile-specific styles... */
-}
-.house-details {
-  /* Adjust margins for mobile if necessary */
-  margin-top: 0;
-}
-.back-to-overview,
-.house-actions {
-  position: absolute; /* Absolute positioning inside the relative container */
-  top: 20px; /* 20px from the top of the page */
-  z-index: 10; /* Ensure it's above other elements */
-}
-.back-to-overview {
-  left: 20px; /* 20px from the left side of the page */
-}
-.house-actions {
-  right: 20px; /* 20px from the right side of the page */
-}
-.house-image-container {
-  margin-top: 0; /* Remove margin at the top */
-  position: relative; /* Set position relative to use absolute children */
-  box-shadow: none; /* Optional: remove shadow on mobile */
-}
-.house-image-container img {
-  height: auto; /* Adjust image height as necessary */
-  width: 100%; /* Full width */
-  display: block;
-}
-.house-content {
-  position: absolute; /* Absolute position to overlap the image */
-  top: calc(100% - 650px); /* Shift upwards to overlap the image by 10px */
-  left: 0;
-  right: 0;
-  border-radius: 15px 15px 0 0;
-  background: white;
 
-  z-index: 9;
+@media (max-width: 414px) {
+  .house-details-page {
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: #f6f6f6;
+    min-height: 100vh;
+  }
+  .house-details {
+    position: relative;
+    margin-top: 0;
+  }
+  .back-to-overview {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    z-index: 10;
+  }
+  .house-actions {
+    position: absolute;
+    top: -240px;
+    right: 20px;
+    z-index: 10;
+  }
+  .house-image-container {
+    margin-top: 0;
+  }
+  .house-image-container img {
+    width: 100%;
+    height: auto;
+  }
+
+  .house-content {
+    position: absolute; /* Absolute position to overlap the image */
+    top: calc(
+      100% - 10px
+    ); /* Adjust the value to overlap the image as needed */
+    left: 0;
+    right: 0;
+    border-radius: 15px 15px 0 0; /* Rounded top edges */
+    background: white;
+  }
 }
 </style>
