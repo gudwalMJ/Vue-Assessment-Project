@@ -63,12 +63,13 @@
 
         <!-- Actions for editing and deleting a listing -->
         <div class="house-footer" v-if="house.madeByMe">
-          <router-link
-            :to="{ name: 'EditListingForm', params: { id: house.id } }"
+          <button
+            @click.stop="navigateToEditPage(house.id)"
             class="action-button edit"
           >
             <img src="@/assets/ic_edit@3x.png" alt="Edit" />
-          </router-link>
+          </button>
+
           <button
             @click.stop="askDeleteConfirmation(house.id)"
             class="action-button delete"
@@ -166,7 +167,6 @@ export default {
       apiService
         .getHouses()
         .then((response) => {
-          console.log(response.data);
           this.houses = response.data;
         })
         .catch((error) => {

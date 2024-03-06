@@ -146,6 +146,7 @@ export default {
     // Fetches house details based on the route parameter id
     fetchHouseDetails() {
       const houseId = this.$route.params.id;
+
       apiService
         .getHouseById(houseId)
         .then((response) => {

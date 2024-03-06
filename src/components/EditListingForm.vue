@@ -223,6 +223,7 @@ export default {
     // Initial data properties for the listing and form state
     return {
       backIcon,
+      imagePreviewUrl: null,
       listing: {
         location: {},
         // Initialize other expected properties similarly
