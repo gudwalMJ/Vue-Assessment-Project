@@ -17,14 +17,27 @@
           to="/"
           class="navbar-item"
           :class="{ 'is-active': activePage === 'Houses' }"
-          >Houses</router-link
         >
+          <img
+            v-if="isMobile"
+            :src="activePage === 'Houses' ? housesIconActive : housesIcon"
+            alt="Houses"
+          />
+          <span v-else>Houses</span>
+        </router-link>
+
         <!-- Navigation item for About page -->
         <router-link
           to="/about"
           class="navbar-item"
           :class="{ 'is-active': activePage === 'About' }"
-          >About</router-link
+        >
+          <img
+            v-if="isMobile"
+            :src="activePage === 'About' ? aboutIconActive : aboutIcon"
+            alt="About"
+          />
+          <span v-else>About</span></router-link
         >
       </div>
     </div>
@@ -32,14 +45,36 @@
 </template>
 
 <script>
+import aboutIcon from "@/assets/ic_mobile_navigarion_info@3x.png";
+import aboutIconActive from "@/assets/ic_mobile_navigarion_info_active@3x.png";
+import housesIcon from "@/assets/ic_mobile_navigarion_home@3x.png";
+import housesIconActive from "@/assets/ic_mobile_navigarion_home_active@3x.png";
+
 export default {
   data() {
     return {
       activePage: "Houses", // Current active page for styling active navbar item
+      isMobile: false,
+      aboutIcon,
+      aboutIconActive,
+      housesIcon,
+      housesIconActive,
     };
   },
+  created() {
+    this.checkIfMobile();
+    window.addEventListener("resize", this.checkIfMobile);
+  },
+  beforeUnmount() {
+    // Updated from beforeDestroy to beforeUnmount
+    window.removeEventListener("resize", this.checkIfMobile);
+  },
+  methods: {
+    checkIfMobile() {
+      this.isMobile = window.innerWidth <= 414;
+    },
+  },
   watch: {
-    // Watch for route changes to update active navbar item
     $route(to) {
       this.activePage = to.name; // Update activePage based on route name
     },
@@ -94,5 +129,49 @@ export default {
 .is-active {
   color: black; /* Active item color */
   font-weight: bold;
+}
+
+/* Media query for devices with width up to 414px */
+@media (max-width: 414px) {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%; /* Ensure the full height is utilized */
+    position: relative;
+  }
+  .navbar {
+    position: fixed;
+    top: auto; /* Remove the top positioning */
+    bottom: 0; /* Position navbar at the bottom */
+    padding: 5px 0; /* Adjust padding for smaller screens */
+    z-index: 1000;
+    height: 50px;
+  }
+  .container {
+    flex-direction: row; /* Override if needed */
+    justify-content: center; /* Center the content */
+    padding: 0 10px; /* Adjust container padding if necessary */
+    max-width: 100%; /* Use full width */
+  }
+  .navbar-brand,
+  .navbar-menu {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .navbar-item img {
+    width: 24px; /* Resize icons */
+    height: auto;
+    margin-right: 10px; /* Adjust spacing between icon and text */
+    margin-top: 7px;
+  }
+  .navbar-logo {
+    display: none;
+  }
+  .navbar-item {
+    margin: 0 60px; /* Example adjustment for spacing between items */
+    padding: 5px 10px;
+  }
 }
 </style>

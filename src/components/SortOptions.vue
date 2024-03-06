@@ -55,4 +55,33 @@ button.active {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
 }
+
+/* Media query for mobile devices */
+@media (max-width: 414px) {
+  .sort-options {
+    width: calc(100% - 40px);
+    margin: 0 20px;
+    justify-content: space-between;
+    margin-bottom: -30px;
+  }
+  button {
+    flex: 1;
+    margin: 5px;
+    padding: 10px 0;
+  }
+  .first {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+  .second {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+  .first {
+    margin-right: 0px; /* Ensure a small gap between the buttons */
+  }
+  .second {
+    margin-left: 0; /* Ensure a small gap between the buttons */
+  }
+}
 </style>

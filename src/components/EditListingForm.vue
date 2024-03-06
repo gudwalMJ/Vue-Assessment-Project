@@ -2,9 +2,10 @@
   <div class="edit-listing-page">
     <!-- Header section with back navigation and page title -->
     <div class="header-container">
-      <a href="/" class="back-to-overview">
-        <img :src="backIcon" alt="Back" /> Back to detail page
-      </a>
+      <router-link to="/" class="back-to-overview">
+        <img :src="backIcon" alt="Back" class="back-icon" />
+        <span class="back-text">Back to detail page</span>
+      </router-link>
       <h1>Edit Listing</h1>
     </div>
     <!-- Form layout for editing listing -->
@@ -637,5 +638,61 @@ input[type="number"] {
   margin-left: 250px;
   width: 170px;
   font-size: 18px;
+}
+
+@media (max-width: 414px) {
+  .edit-listing-page {
+    background-color: #f6f6f6;
+    padding: 15px; /* Adjust padding for mobile */
+    margin-top: 0;
+    margin-bottom: 100px;
+  }
+  .header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    margin: 0;
+    margin-bottom: 30px;
+  }
+  .header-container h1 {
+    font-size: 18px;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;
+  }
+  .back-to-overview {
+    position: absolute;
+    left: 15px;
+    margin-bottom: 0;
+  }
+  .back-to-overview .back-text {
+    display: none; /* Hide the text next to the back icon on mobile */
+  }
+  .form-layout {
+    margin-left: 0px;
+    margin-right: -30px;
+    padding-bottom: 15px;
+  }
+  .input-container,
+  .row .input-container {
+    width: calc(100% - 40px); /* full width minus the padding */
+  }
+  .row {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    justify-content: space-between; /* Space items evenly */
+  }
+  .input-container.half {
+    flex: 1; /* Allow each item to grow */
+  }
+  .save-button {
+    margin-left: 0px; /* Align with the rest of the content */
+    width: calc(100% - 40px); /* full width minus the padding */
+  }
+  .input-container.half select {
+    width: 180px; /* Ensure the select element fills the container */
+  }
 }
 </style>

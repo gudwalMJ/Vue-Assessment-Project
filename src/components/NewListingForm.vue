@@ -2,9 +2,10 @@
   <div class="new-listing-page">
     <!-- Header section with back navigation and page title -->
     <div class="header-container">
-      <a href="/" class="back-to-overview">
-        <img :src="backIcon" alt="back" />Back to overview
-      </a>
+      <router-link to="/" class="back-to-overview">
+        <img :src="backIcon" alt="Back" class="back-icon" />
+        <span class="back-text">Back to overview</span>
+      </router-link>
       <h1>Create new listing</h1>
     </div>
     <!-- Form layout for various listing creation -->
@@ -553,5 +554,70 @@ input[type="number"] {
   height: 100%;
   opacity: 0;
   cursor: pointer;
+}
+/* Styles to be applied on mobile screens */
+@media (max-width: 414px) {
+  .new-listing-page {
+    background-color: #f6f6f6;
+    padding: 15px; /* Adjust padding for mobile */
+    margin-top: 0;
+    margin-bottom: 100px;
+  }
+  .header-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    margin: 0;
+    margin-bottom: 30px;
+  }
+  .header-container h1 {
+    font-size: 18px;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0;
+  }
+  .back-to-overview {
+    position: absolute; /* Position it absolutely to stick it to the left */
+    left: 15px; /* Align with the padding of the container */
+    margin-bottom: 0;
+  }
+  .back-to-overview .back-text {
+    display: none; /* Hide the text next to the back icon on mobile */
+  }
+  .form-layout {
+    margin-left: 0px; /* Align with the rest of the content */
+    margin-right: -30px; /* Keep consistent spacing on the right */
+    padding-bottom: 15px;
+  }
+  /* Full-width input fields */
+  .input-container,
+  .row .input-container {
+    width: calc(100% - 40px); /* full width minus the padding */
+  }
+  .row {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    justify-content: space-between; /* Space items evenly */
+  }
+  .input-container.half {
+    flex: 1; /* Allow each item to grow */
+  }
+
+  .upload-btn-wrapper {
+    width: calc(100% - 200px); /* full width minus the padding */
+    height: 100px; /* adjust height as needed */
+  }
+  .submit-button {
+    margin-left: 0px; /* Align with the rest of the content */
+    width: calc(100% - 40px); /* full width minus the padding */
+  }
+  .new-listing-page textarea {
+    width: calc(100% - 0px); /* full width minus the padding */
+  }
+  .input-container.half select {
+    width: 180px; /* Ensure the select element fills the container */
+  }
 }
 </style>

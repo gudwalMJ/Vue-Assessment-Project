@@ -340,4 +340,45 @@ export default {
   align-items: center;
   font-size: 22px;
 }
+.house-details-page {
+  padding-top: 0; /* Remove top padding on mobile */
+  padding-bottom: 60px; /* Add more padding at bottom to lift the button */
+  /* Other mobile-specific styles... */
+}
+.house-details {
+  /* Adjust margins for mobile if necessary */
+  margin-top: 0;
+}
+.back-to-overview,
+.house-actions {
+  position: absolute; /* Absolute positioning inside the relative container */
+  top: 20px; /* 20px from the top of the page */
+  z-index: 10; /* Ensure it's above other elements */
+}
+.back-to-overview {
+  left: 20px; /* 20px from the left side of the page */
+}
+.house-actions {
+  right: 20px; /* 20px from the right side of the page */
+}
+.house-image-container {
+  margin-top: 0; /* Remove margin at the top */
+  position: relative; /* Set position relative to use absolute children */
+  box-shadow: none; /* Optional: remove shadow on mobile */
+}
+.house-image-container img {
+  height: auto; /* Adjust image height as necessary */
+  width: 100%; /* Full width */
+  display: block;
+}
+.house-content {
+  position: absolute; /* Absolute position to overlap the image */
+  top: calc(100% - 650px); /* Shift upwards to overlap the image by 10px */
+  left: 0;
+  right: 0;
+  border-radius: 15px 15px 0 0;
+  background: white;
+
+  z-index: 9;
+}
 </style>

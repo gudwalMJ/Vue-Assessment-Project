@@ -3,10 +3,16 @@
     <!-- Title and navigation to create new listing -->
     <div class="title-container">
       <h1 class="title">Houses</h1>
-      <router-link to="/new-listing" class="create-listing-button"
-        ><img :src="plusIcon" alt="Create New" class="plus-icon" /> Create
-        New</router-link
-      >
+      <!-- Display the white icon for larger screens and grey icon for mobile -->
+      <router-link to="/new-listing" class="create-listing-button">
+        <img
+          :src="isMobile ? plusIconGrey : plusIcon"
+          alt="Create New"
+          class="plus-icon"
+        />
+        <span v-if="!isMobile">Create New</span>
+      </router-link>
+
       <!-- Show form to create a new listing -->
       <div v-if="showCreateForm">
         <NewListingForm @listing-created="handleListingCreated" />
@@ -114,6 +120,7 @@ import ConfirmationDialog from "@/components/ConfirmationDialog.vue";
 import placeholderImage from "@/assets/img_placeholder_house@3x.png";
 // Import the images/icons
 import plusIcon from "@/assets/ic_plus_white@3x.png";
+import plusIconGrey from "@/assets/ic_plus_grey@3x.png";
 import sizeIcon from "@/assets/ic_size@3x.png";
 import bedIcon from "@/assets/ic_bed@3x.png";
 import bathIcon from "@/assets/ic_bath@3x.png";
@@ -128,6 +135,7 @@ export default {
   data() {
     return {
       plusIcon,
+      plusIconGrey,
       sizeIcon,
       bedIcon,
       bathIcon,
@@ -138,6 +146,7 @@ export default {
       showCreateForm: false,
       showConfirmationDialog: false,
       houseToDelete: null,
+      isMobile: window.innerWidth <= 414,
     };
   },
   computed: {
@@ -160,8 +169,16 @@ export default {
   },
   created() {
     this.fetchHouses();
+    window.addEventListener("resize", this.checkMobile);
+    this.checkMobile();
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.checkMobile);
   },
   methods: {
+    checkMobile() {
+      this.isMobile = window.innerWidth <= 414;
+    },
     // FETCH Houses
     fetchHouses() {
       apiService
@@ -403,5 +420,110 @@ export default {
 .empty-state-container p {
   color: #4a4b4c;
   font-size: 18px;
+}
+
+/* General mobile styling */
+@media (max-width: 414px) {
+  .content-container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  /* Title and create new button */
+  .title-container {
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -20px;
+  }
+  .title {
+    font-size: 24px;
+    margin-left: 170px;
+  }
+  .plus-icon {
+    position: absolute;
+    width: 16px; /* Size for the grey icon */
+    height: 16px;
+  }
+  .create-listing-button {
+    position: absolute;
+    right: -180px; /* Adjust the value as needed to align it to the right edge */
+    width: 16px; /* Size for the grey icon */
+    height: 16px;
+    background: none; /* Ensure no background */
+    border: none; /* Ensure no border */
+    box-shadow: none; /* Ensure no shadow */
+  }
+
+  .results-indication {
+    margin: 50px 0;
+    margin-bottom: -40px;
+    font-size: 18px;
+    width: 100%;
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  /* Adjust the search bar and sorting options container */
+  .search-and-sort-container {
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Houses list adjustments */
+  .houses {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 390px;
+    margin: 50px auto;
+  }
+
+  .house {
+    width: 90%;
+    margin: 0;
+  }
+  .house-image {
+    width: 100px;
+    height: 100px;
+  }
+  .details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .details p {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .details p.street {
+    font-weight: bold;
+    font-size: 18px;
+    color: #000000;
+  }
+  .details p.price {
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .details p.zip-city {
+    color: #c3c3c3;
+    font-size: 14px;
+  }
+
+  .details p.info img {
+    width: 14px;
+    height: 14px;
+  }
+  .house-footer {
+    margin-top: -100px;
+  }
+  .action-button img {
+    width: 16px;
+    height: 16px;
+  }
 }
 </style>

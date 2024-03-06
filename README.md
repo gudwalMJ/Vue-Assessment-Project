@@ -99,3 +99,12 @@ Components
 - Total 5 hours
 
 TOTAL HOURS: 19 Hours
+
+- Started on phone responsivness @ 1130
+- @ 11:30 Navbar done
+- @ 11:50 Searchbar done
+- @ 12:00 SortOptions done
+- @ 13:00 HomePage done
+- @ 14:00 NewListingForm done
+- @ 14:30 EditListingForm done
+- @ 15:00 HouseDetailsPage done

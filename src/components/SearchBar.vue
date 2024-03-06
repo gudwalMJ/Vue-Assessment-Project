@@ -84,4 +84,21 @@ export default {
   width: 15px;
   height: 15px;
 }
+@media (max-width: 414px) {
+  .search-bar {
+    width: calc(100% - 40px);
+    margin: 20px 20px;
+    height: 30px;
+  }
+  .search-input {
+    padding-left: 40px;
+  }
+  .clear-icon {
+    top: 21px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-50%);
+  }
+}
 </style>
